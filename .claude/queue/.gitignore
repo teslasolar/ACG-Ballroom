@@ -1,0 +1,6 @@
+pending/*
+active/*
+failed/*
+!pending/.gitkeep
+!active/.gitkeep
+!failed/.gitkeep
