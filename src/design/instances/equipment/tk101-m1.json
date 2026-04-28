@@ -4,6 +4,8 @@
   "name": "TK-101 Agitator",
   "tagPath": "[default]Plant/TK101/M1",
   "area": "Production/Line1",
+  "pos": [0, 0.65, -16.5],
+  "geom": "anvil",
   "amps":     "tag.TK101.M1.Amps",
   "running":  "tag.TK101.M1.Running",
   "fault":    "tag.TK101.M1.Fault",

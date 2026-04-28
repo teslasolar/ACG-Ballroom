@@ -4,6 +4,8 @@
   "name": "P-101 Transfer Pump",
   "tagPath": "[default]Plant/P101",
   "area": "Utilities",
+  "pos": [-10, 0, -17],
+  "geom": "fire",
   "amps":       "tag.P101.Amps",
   "running":    "tag.P101.Running",
   "fault":      "tag.P101.Fault",

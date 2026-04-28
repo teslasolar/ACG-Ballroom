@@ -7,6 +7,8 @@
     "name": "str",
     "tagPath": "str",
     "area": "str?",
+    "pos": "float[]?",
+    "geom": "enum:box|cyl|anvil|chandelier|fire?",
     "alarms": "udt:AlarmSet?"
   },
   "uses": ["AlarmSet"]
