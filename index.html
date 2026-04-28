@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>⚒ ACG Ballroom · Directory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=IBM+Plex+Sans:wght@700;800&display=swap">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--b:#30363d;--t:#c9d1d9;--t2:#484f58;--accent:#e3b341;--info:#58a6ff;--ign:#f57c20;--ok:#3fb950}
+*{margin:0;box-sizing:border-box}
+html,body{height:100%;background:var(--bg);color:var(--t);font-family:'IBM Plex Mono',monospace}
+body{display:grid;grid-template-rows:auto 1fr auto;min-height:100vh}
+header{padding:24px 32px;border-bottom:1px solid var(--b);display:flex;align-items:baseline;gap:12px}
+header h1{font-family:'IBM Plex Sans',sans-serif;font-size:20px;font-weight:800;color:var(--accent);letter-spacing:2px}
+header .sub{font-size:10px;color:var(--t2);letter-spacing:3px}
+main{padding:32px;display:grid;gap:16px;align-content:start;max-width:760px;width:100%;margin:0 auto}
+.lead h2{font-family:'IBM Plex Sans',sans-serif;font-size:32px;font-weight:800;color:var(--t);line-height:1.15}
+.lead p{font-size:12px;color:var(--t2);margin-top:8px;line-height:1.7;max-width:560px}
+.dir{display:grid;gap:8px;margin-top:8px}
+.app{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:16px;background:var(--card);border:1px solid var(--b);border-radius:6px;text-decoration:none;color:inherit;transition:.12s}
+.app:hover{border-color:var(--info);transform:translateY(-1px)}
+.app[aria-disabled=true]{opacity:.4;cursor:not-allowed;pointer-events:none}
+.app .ico{font-size:28px;width:36px;text-align:center}
+.app .body h3{font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:700;color:var(--t)}
+.app .body p{font-size:10px;color:var(--t2);margin-top:3px}
+.app .meta{font-size:9px;color:var(--t2);text-align:right}
+.app .meta .tag{display:inline-block;padding:2px 6px;border:1px solid var(--b);border-radius:3px;color:var(--accent);letter-spacing:1px}
+.app[data-state=ready] .meta .tag{color:var(--ok);border-color:var(--ok)}
+.app[data-state=wip] .meta .tag{color:var(--ign);border-color:var(--ign)}
+footer{padding:16px 32px;border-top:1px solid var(--b);display:flex;justify-content:space-between;font-size:9px;color:var(--t2)}
+footer a{color:var(--info);text-decoration:none}
+footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<header>
+  <h1>⚒ ACG BALLROOM</h1>
+  <span class="sub">DIRECTORY</span>
+</header>
+<main>
+  <section class="lead">
+    <h2>AI Craftspeople Guild</h2>
+    <p>An enterprise-nested ballroom directory: a voxel guild hall, an Ignition tutorial walkthrough, and the SCADA-style backend that drives both. Pick a door.</p>
+  </section>
+  <nav class="dir">
+    <a class="app" href="acg_ballroom.html" data-state="ready">
+      <span class="ico">⚒</span>
+      <div class="body">
+        <h3>Voxel Guild Hall</h3>
+        <p>First-person three.js ballroom rendered from the Ballroom UDT instance. WASD to move, mouse to look, click to enter.</p>
+      </div>
+      <div class="meta"><span class="tag">READY</span><div style="margin-top:4px">acg_ballroom.html</div></div>
+    </a>
+    <a class="app" aria-disabled="true" data-state="wip">
+      <span class="ico">🔥</span>
+      <div class="body">
+        <h3>Ignition · Zero to Gateway</h3>
+        <p>24-step tutorial driven by TutorialStep UDT instances. Stage canvas, namespaced sidebars, audio sync, lights on/off.</p>
+      </div>
+      <div class="meta"><span class="tag">WIP</span><div style="margin-top:4px">/tutorial/</div></div>
+    </a>
+  </nav>
+</main>
+<footer>
+  <span>⚒ ACG · The floor is yours.</span>
+  <span><a href="https://github.com/teslasolar/ACG-Ballroom">teslasolar/ACG-Ballroom</a></span>
+</footer>
+</body>
+</html>

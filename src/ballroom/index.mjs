@@ -10,10 +10,10 @@ import { makeControls } from '../modules/ballroom/controls.mjs';
 import { startLoop } from '../modules/ballroom/loop.mjs';
 import * as theme from '../modules/theme.mjs';
 
-const BALLROOM_URL = '/src/design/instances/ballroom/acg-main.json';
+const BALLROOM_URL = 'src/design/instances/ballroom/acg-main.json';
 const EQUIPMENT_URLS = [
-  '/src/design/instances/equipment/tk101-m1.json',
-  '/src/design/instances/equipment/p101.json',
+  'src/design/instances/equipment/tk101-m1.json',
+  'src/design/instances/equipment/p101.json',
 ];
 
 async function fetchJson(url) {
@@ -24,8 +24,8 @@ async function fetchJson(url) {
 
 async function main() {
   // Themes first so the page paints in the chosen scheme before three boots.
-  await theme.loadBundleFromUrl('/src/design/instances/themes/dark.json');
-  await theme.loadBundleFromUrl('/src/design/instances/themes/light.json');
+  await theme.loadBundleFromUrl('src/design/instances/themes/dark.json');
+  await theme.loadBundleFromUrl('src/design/instances/themes/light.json');
   theme.restoreOrApply('theme.dark');
 
   const themeBtn = document.getElementById('themeBt');
