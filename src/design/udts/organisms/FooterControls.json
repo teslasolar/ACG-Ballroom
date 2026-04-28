@@ -1,0 +1,13 @@
+{
+  "udt": "FooterControls",
+  "kind": "organism",
+  "doc": "bottom B bar: prev/next/auto/rec + progress + stepCt",
+  "members": {
+    "id": "str",
+    "buttons": "udt:Button[]",
+    "progress": "udt:ProgressBar",
+    "stepCt": "udt:Stepper"
+  },
+  "uses": ["Button", "ProgressBar", "Stepper"],
+  "css": ".B"
+}

@@ -1,0 +1,12 @@
+{
+  "udt": "ThemeToken",
+  "kind": "data",
+  "doc": "single CSS custom property (--bg, --ig, ...)",
+  "members": {
+    "id": "str",
+    "varName": "str",
+    "value": "color",
+    "role": "enum:bg|surface|border|text|accent|status",
+    "comment": "str?"
+  }
+}

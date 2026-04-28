@@ -1,0 +1,12 @@
+{
+  "udt": "Label",
+  "kind": "atom",
+  "doc": "phrase header used above sidebar sections",
+  "members": {
+    "id": "str",
+    "text": "str",
+    "icon": "emoji?",
+    "tone": "enum:default|accent|muted"
+  },
+  "css": ".ph"
+}

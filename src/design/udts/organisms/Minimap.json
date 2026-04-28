@@ -1,0 +1,13 @@
+{
+  "udt": "Minimap",
+  "kind": "organism",
+  "doc": "top-down 120x120 canvas of current ballroom",
+  "members": {
+    "id": "str",
+    "size": "int",
+    "follows": "ref<Ballroom>",
+    "showPlayer": "bool",
+    "showHeading": "bool"
+  },
+  "css": "#minimap"
+}

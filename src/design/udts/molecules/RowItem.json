@@ -1,0 +1,14 @@
+{
+  "udt": "RowItem",
+  "kind": "molecule",
+  "doc": "left-sidebar row: dot + index + title (+ optional check)",
+  "members": {
+    "id": "str",
+    "index": "int?",
+    "title": "str",
+    "state": "enum:idle|active|done|fail",
+    "onClick": "str?"
+  },
+  "uses": ["Dot"],
+  "css": ".ri"
+}

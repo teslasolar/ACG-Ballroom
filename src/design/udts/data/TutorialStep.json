@@ -1,0 +1,21 @@
+{
+  "udt": "TutorialStep",
+  "kind": "data",
+  "doc": "one slide of the Ignition tutorial; renders into stage + sidebars",
+  "members": {
+    "id": "str",
+    "index": "int",
+    "phase": "enum:INSTALL|CONFIG|TAGS|DESIGNER",
+    "title": "str",
+    "ico": "emoji",
+    "h1": "str",
+    "h2": "str",
+    "body": "md",
+    "code": "code",
+    "key": "str[]",
+    "mistakes": "str[]",
+    "config": "kv<str,any>",
+    "prereqs": "str[]"
+  },
+  "renders": ["StageCanvas", "SidebarRight"]
+}

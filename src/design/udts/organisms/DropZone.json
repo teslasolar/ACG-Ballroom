@@ -1,0 +1,13 @@
+{
+  "udt": "DropZone",
+  "kind": "organism",
+  "doc": "drag-target overlay; click opens file picker",
+  "members": {
+    "id": "str",
+    "icon": "emoji",
+    "msg": "str",
+    "sub": "str?",
+    "accept": "str"
+  },
+  "css": "#drop"
+}

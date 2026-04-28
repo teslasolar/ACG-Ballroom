@@ -1,0 +1,14 @@
+{
+  "udt": "Tank",
+  "kind": "data",
+  "extends": "Equipment",
+  "doc": "Vessel with level/temp/pressure + nested Pump and Valve",
+  "members": {
+    "level": "ref<Tag>",
+    "temp": "ref<Tag>?",
+    "pressure": "ref<Tag>?",
+    "agitator": "udt:Motor?",
+    "inletPump": "udt:Pump?"
+  },
+  "uses": ["Motor", "Pump"]
+}

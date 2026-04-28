@@ -1,0 +1,13 @@
+{
+  "udt": "Equipment",
+  "kind": "data",
+  "doc": "base for all physical assets; child UDTs extend this",
+  "members": {
+    "id": "str",
+    "name": "str",
+    "tagPath": "str",
+    "area": "str?",
+    "alarms": "udt:AlarmSet?"
+  },
+  "uses": ["AlarmSet"]
+}

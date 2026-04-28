@@ -1,0 +1,15 @@
+{
+  "udt": "Section",
+  "kind": "molecule",
+  "doc": "header label + body block; the building unit of sidebars",
+  "members": {
+    "id": "str",
+    "header": "udt:Label",
+    "rows": "udt:RowItem[]?",
+    "pairs": "udt:KvPair[]?",
+    "tips": "udt:TipBox[]?",
+    "code": "udt:CodeLine[]?",
+    "raw": "md?"
+  },
+  "uses": ["Label", "RowItem", "KvPair", "TipBox", "CodeLine"]
+}

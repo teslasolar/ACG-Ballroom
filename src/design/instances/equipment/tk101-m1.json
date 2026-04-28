@@ -1,0 +1,20 @@
+{
+  "udt": "Motor",
+  "id": "eq.TK101.M1",
+  "name": "TK-101 Agitator",
+  "tagPath": "[default]Plant/TK101/M1",
+  "area": "Production/Line1",
+  "amps":     "tag.TK101.M1.Amps",
+  "running":  "tag.TK101.M1.Running",
+  "fault":    "tag.TK101.M1.Fault",
+  "runHours": "tag.TK101.M1.RunHours",
+  "alarms": {
+    "udt": "AlarmSet",
+    "id": "alms.TK101.M1",
+    "name": "TK101 M1 Alarms",
+    "alarms": [
+      { "udt": "Alarm", "id": "alm.TK101.M1.Fault.inst",      "name": "Fault",       "source": "tag.TK101.M1.Fault", "mode": "equal", "setpoint": 1,    "priority": "high", "ackRequired": true },
+      { "udt": "Alarm", "id": "alm.TK101.M1.Over.inst",       "name": "Overcurrent", "source": "tag.TK101.M1.Amps",  "mode": "above", "setpoint": 18.0, "priority": "high", "ackRequired": true }
+    ]
+  }
+}

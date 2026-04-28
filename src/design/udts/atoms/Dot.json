@@ -1,0 +1,11 @@
+{
+  "udt": "Dot",
+  "kind": "atom",
+  "doc": "5x5 round status indicator",
+  "members": {
+    "id": "str",
+    "tone": "enum:idle|active|done|warn|error|info",
+    "tooltip": "str?"
+  },
+  "css": ".dot"
+}

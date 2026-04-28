@@ -1,0 +1,32 @@
+{
+  "udt": "Ballroom",
+  "id": "br.acg-main",
+  "name": "ACG Main Ballroom",
+  "size": [30, 8, 40],
+  "spawn": [0, 2, 15],
+  "ambientHex": "#0d1117",
+  "rooms": [
+    {
+      "udt": "Room", "id": "rm.acg.main-hall", "name": "Main Hall",
+      "kind": "hall", "bbox": [-15, 0, -10,  15, 8,  10],
+      "subRooms": [
+        { "udt": "Room", "id": "rm.acg.chandelier", "name": "Chandelier Spot",
+          "kind": "annex", "bbox": [-3, 5, -3, 3, 7, 3] }
+      ]
+    },
+    {
+      "udt": "Room", "id": "rm.acg.stage", "name": "Stage",
+      "kind": "stage", "bbox": [-8, 0, -20,  8, 4, -14],
+      "equipment": ["eq.TK101.M1"]
+    },
+    {
+      "udt": "Room", "id": "rm.acg.forge", "name": "Forge",
+      "kind": "forge", "bbox": [-15, 0, -20,  -5, 4, -10],
+      "equipment": ["eq.P101"]
+    },
+    {
+      "udt": "Room", "id": "rm.acg.entrance", "name": "Entrance",
+      "kind": "entrance", "bbox": [-15, 0, 14,  15, 4, 20]
+    }
+  ]
+}

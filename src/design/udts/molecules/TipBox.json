@@ -1,0 +1,12 @@
+{
+  "udt": "TipBox",
+  "kind": "molecule",
+  "doc": "tone-aware callout (.tip / .warn / .info)",
+  "members": {
+    "id": "str",
+    "tone": "enum:tip|warn|info|err",
+    "label": "str?",
+    "body": "md"
+  },
+  "css": ".tip,.warn"
+}

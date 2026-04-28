@@ -1,0 +1,24 @@
+{
+  "udt": "_meta",
+  "kind": "meta",
+  "doc": "shape every udt file must satisfy",
+  "members": {
+    "udt": "str",
+    "kind": "enum:meta|atom|molecule|organism|data|theme|util",
+    "extends": "str?",
+    "doc": "str?",
+    "members": "kv<str,typespec>",
+    "uses": "str[]?",
+    "css": "str?",
+    "renders": "str[]?"
+  },
+  "typespec_grammar": [
+    "scalar: str|int|float|bool|emoji|md|code|color",
+    "optional: <T>?",
+    "array:    <T>[]",
+    "enum:     enum:A|B|C",
+    "map:      kv<K,V>",
+    "ref:      ref<UdtName>",
+    "nested:   udt:UdtName"
+  ]
+}

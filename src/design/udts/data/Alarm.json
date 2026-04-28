@@ -1,0 +1,14 @@
+{
+  "udt": "Alarm",
+  "kind": "data",
+  "doc": "single alarm definition bound to a Tag",
+  "members": {
+    "id": "str",
+    "name": "str",
+    "source": "ref<Tag>",
+    "mode": "enum:above|below|equal|change",
+    "setpoint": "float?",
+    "priority": "enum:diagnostic|low|medium|high|critical",
+    "ackRequired": "bool"
+  }
+}

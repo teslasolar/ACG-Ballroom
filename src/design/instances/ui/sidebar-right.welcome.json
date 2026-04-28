@@ -1,0 +1,41 @@
+{
+  "udt": "SidebarRight",
+  "id": "ui.sb-right.welcome",
+  "width": "205px",
+  "sections": [
+    {
+      "udt": "Section",
+      "id": "ui.sec.config.welcome",
+      "header": { "udt": "Label", "id": "ui.lbl.config", "text": "CURRENT CONFIG", "icon": "⚙️", "tone": "accent" },
+      "pairs": []
+    },
+    {
+      "udt": "Section",
+      "id": "ui.sec.key.welcome",
+      "header": { "udt": "Label", "id": "ui.lbl.key", "text": "KEY INFO", "icon": "🔑", "tone": "accent" },
+      "tips": [
+        { "udt": "TipBox", "id": "ui.tip.welcome.1", "tone": "tip", "body": "Ignition is FREE for 2 hours of trial" },
+        { "udt": "TipBox", "id": "ui.tip.welcome.2", "tone": "tip", "body": "Maker Edition is free forever for personal use" }
+      ]
+    },
+    {
+      "udt": "Section",
+      "id": "ui.sec.mistakes.welcome",
+      "header": { "udt": "Label", "id": "ui.lbl.mistakes", "text": "COMMON MISTAKES", "icon": "⚠️", "tone": "accent" },
+      "tips": [
+        { "udt": "TipBox", "id": "ui.warn.welcome.1", "tone": "warn", "label": "Mistake", "body": "Downloading the wrong OS version" }
+      ]
+    },
+    {
+      "udt": "Section",
+      "id": "ui.sec.ports",
+      "header": { "udt": "Label", "id": "ui.lbl.ports", "text": "PORTS & URLS", "icon": "📡", "tone": "accent" },
+      "pairs": [
+        { "udt": "KvPair", "id": "ui.kv.gw",   "pair": { "udt": "KeyValue", "id": "ui.k.gw",   "k": "Gateway",  "v": "localhost:8088",                          "tone": "ok" } },
+        { "udt": "KvPair", "id": "ui.kv.ssl",  "pair": { "udt": "KeyValue", "id": "ui.k.ssl",  "k": "SSL",      "v": "localhost:8043",                          "tone": "ok" } },
+        { "udt": "KvPair", "id": "ui.kv.opc",  "pair": { "udt": "KeyValue", "id": "ui.k.opc",  "k": "OPC-UA",   "v": ":62541",                                  "tone": "ok" } },
+        { "udt": "KvPair", "id": "ui.kv.dsg",  "pair": { "udt": "KeyValue", "id": "ui.k.dsg",  "k": "Designer", "v": ":8088/web/designerlaunch",                "tone": "ok" } }
+      ]
+    }
+  ]
+}

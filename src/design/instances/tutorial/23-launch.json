@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.23.launch",
+  "index": 23,
+  "phase": "DESIGNER",
+  "title": "LAUNCH & VERIFY",
+  "ico": "✅",
+  "h1": "LAUNCH IN BROWSER",
+  "h2": "Your first Ignition application",
+  "body": "Open your browser. Navigate to your Perspective URL. Log in. You should see your view with live data from your PLC. Congratulations — you have a working Ignition SCADA system.",
+  "code": "Browser URL:\n  http://localhost:8088/data/perspective/client/MyPlant\n\nYou should see:\n  ✓ Your view rendering\n  ✓ Live tag values updating\n  ✓ Components bound to PLC data",
+  "key": [
+    "URL pattern: :8088/data/perspective/client/[PROJECT]",
+    "Works on any device with a browser",
+    "Mobile responsive if you use Flex containers",
+    "Can serve multiple concurrent users"
+  ],
+  "mistakes": [
+    "Accessing via HTTP when HTTPS is required by auth config",
+    "Not testing on mobile/tablet viewport sizes",
+    "Forgetting to set up authentication before going to production"
+  ],
+  "config": { "url": "http://localhost:8088/data/perspective/client/MyPlant" },
+  "prereqs": ["step.01.download"]
+}

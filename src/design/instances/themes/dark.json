@@ -1,0 +1,21 @@
+{
+  "udt": "ThemeBundle",
+  "id": "theme.dark",
+  "name": "Lights Off",
+  "scheme": "dark",
+  "tokens": [
+    { "udt": "ThemeToken", "id": "tok.dark.bg",   "varName": "--bg",   "value": "#060810", "role": "bg" },
+    { "udt": "ThemeToken", "id": "tok.dark.card", "varName": "--card", "value": "#0b0e16", "role": "surface" },
+    { "udt": "ThemeToken", "id": "tok.dark.s2",   "varName": "--s2",   "value": "#10141e", "role": "surface" },
+    { "udt": "ThemeToken", "id": "tok.dark.b",    "varName": "--b",    "value": "#1a2030", "role": "border" },
+    { "udt": "ThemeToken", "id": "tok.dark.t",    "varName": "--t",    "value": "#98a8c0", "role": "text" },
+    { "udt": "ThemeToken", "id": "tok.dark.t2",   "varName": "--t2",   "value": "#3e4e64", "role": "text" },
+    { "udt": "ThemeToken", "id": "tok.dark.ig",   "varName": "--ig",   "value": "#38b5f9", "role": "accent" },
+    { "udt": "ThemeToken", "id": "tok.dark.ign",  "varName": "--ign",  "value": "#f57c20", "role": "accent" },
+    { "udt": "ThemeToken", "id": "tok.dark.ok",   "varName": "--ok",   "value": "#42e898", "role": "status" },
+    { "udt": "ThemeToken", "id": "tok.dark.er",   "varName": "--er",   "value": "#ff4466", "role": "status" },
+    { "udt": "ThemeToken", "id": "tok.dark.wr",   "varName": "--wr",   "value": "#f0a030", "role": "status" },
+    { "udt": "ThemeToken", "id": "tok.dark.gold", "varName": "--gold", "value": "#ffd050", "role": "accent" },
+    { "udt": "ThemeToken", "id": "tok.dark.wh",   "varName": "--wh",   "value": "#e8f0ff", "role": "text" }
+  ]
+}

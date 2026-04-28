@@ -1,0 +1,12 @@
+{
+  "udt": "ThemeBundle",
+  "kind": "theme",
+  "doc": "named bundle of ThemeTokens; lights-on / lights-off",
+  "members": {
+    "id": "str",
+    "name": "str",
+    "scheme": "enum:dark|light",
+    "tokens": "udt:ThemeToken[]"
+  },
+  "uses": ["ThemeToken"]
+}

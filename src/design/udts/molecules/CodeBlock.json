@@ -1,0 +1,13 @@
+{
+  "udt": "CodeBlock",
+  "kind": "molecule",
+  "doc": "scrollable preformatted code panel (.cb)",
+  "members": {
+    "id": "str",
+    "lines": "udt:CodeLine[]",
+    "lang": "str?",
+    "title": "str?"
+  },
+  "uses": ["CodeLine"],
+  "css": ".cb"
+}

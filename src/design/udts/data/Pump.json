@@ -1,0 +1,11 @@
+{
+  "udt": "Pump",
+  "kind": "data",
+  "extends": "Motor",
+  "doc": "Motor + hydraulic tags (flow, pressures)",
+  "members": {
+    "flow": "ref<Tag>",
+    "suctPress": "ref<Tag>?",
+    "dischPress": "ref<Tag>?"
+  }
+}

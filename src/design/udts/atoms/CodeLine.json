@@ -1,0 +1,11 @@
+{
+  "udt": "CodeLine",
+  "kind": "atom",
+  "doc": "single preformatted line, indent preserved",
+  "members": {
+    "id": "str",
+    "text": "code",
+    "indent": "int?",
+    "tone": "enum:default|comment|highlight"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "udt": "Stepper",
+  "kind": "molecule",
+  "doc": "compact 'n / total' indicator",
+  "members": {
+    "id": "str",
+    "current": "int",
+    "total": "int",
+    "format": "enum:slash|of|dot"
+  }
+}

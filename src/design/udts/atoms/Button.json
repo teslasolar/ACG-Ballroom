@@ -1,0 +1,14 @@
+{
+  "udt": "Button",
+  "kind": "atom",
+  "doc": "compact pill button (.bt)",
+  "members": {
+    "id": "str",
+    "label": "str",
+    "icon": "emoji?",
+    "variant": "enum:default|go|on|danger",
+    "onClick": "str?",
+    "disabled": "bool?"
+  },
+  "css": ".bt"
+}

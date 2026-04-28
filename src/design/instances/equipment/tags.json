@@ -1,0 +1,14 @@
+[
+  { "udt": "Tag", "id": "tag.TK101.M1.Amps",       "name": "Amps",       "dataType": "Float8", "opcServer": "Ignition OPC-UA Server", "opcItemPath": "ns=1;s=[PLC1]Program:Main.TK101_M1_Amps",       "scanClassMs": 250,  "historyEnabled": true,  "engUnits": "A" },
+  { "udt": "Tag", "id": "tag.TK101.M1.Running",    "name": "Running",    "dataType": "Boolean","opcServer": "Ignition OPC-UA Server", "opcItemPath": "ns=1;s=[PLC1]Program:Main.TK101_M1_Run",        "scanClassMs": 250,  "historyEnabled": true },
+  { "udt": "Tag", "id": "tag.TK101.M1.Fault",      "name": "Fault",      "dataType": "Boolean","opcServer": "Ignition OPC-UA Server", "opcItemPath": "ns=1;s=[PLC1]Program:Main.TK101_M1_Fault",      "scanClassMs": 250,  "historyEnabled": true },
+  { "udt": "Tag", "id": "tag.TK101.M1.RunHours",   "name": "RunHours",   "dataType": "Float8", "scanClassMs": 1000, "historyEnabled": true,  "engUnits": "h" },
+  { "udt": "Tag", "id": "tag.TK101.Level",         "name": "Level",      "dataType": "Float8", "opcServer": "Ignition OPC-UA Server", "opcItemPath": "ns=1;s=[PLC1]Program:Main.TK101_Level",         "scanClassMs": 500,  "historyEnabled": true,  "engUnits": "%" },
+  { "udt": "Tag", "id": "tag.TK101.Temp",          "name": "Temp",       "dataType": "Float8", "opcServer": "Ignition OPC-UA Server", "opcItemPath": "ns=1;s=[PLC1]Program:Main.TK101_Temp",          "scanClassMs": 1000, "historyEnabled": true,  "engUnits": "C" },
+  { "udt": "Tag", "id": "tag.P101.Amps",           "name": "Amps",       "dataType": "Float8", "opcServer": "Ignition OPC-UA Server", "opcItemPath": "ns=1;s=[PLC1]Program:Main.P101_Amps",           "scanClassMs": 250,  "historyEnabled": true,  "engUnits": "A" },
+  { "udt": "Tag", "id": "tag.P101.Running",        "name": "Running",    "dataType": "Boolean","opcServer": "Ignition OPC-UA Server", "opcItemPath": "ns=1;s=[PLC1]Program:Main.P101_Run",            "scanClassMs": 250,  "historyEnabled": true },
+  { "udt": "Tag", "id": "tag.P101.Fault",          "name": "Fault",      "dataType": "Boolean","opcServer": "Ignition OPC-UA Server", "opcItemPath": "ns=1;s=[PLC1]Program:Main.P101_Fault",          "scanClassMs": 250,  "historyEnabled": true },
+  { "udt": "Tag", "id": "tag.P101.Flow",           "name": "Flow",       "dataType": "Float8", "scanClassMs": 250,  "historyEnabled": true,  "engUnits": "gpm" },
+  { "udt": "Tag", "id": "tag.P101.SuctPress",      "name": "SuctPress",  "dataType": "Float8", "scanClassMs": 500,  "historyEnabled": true,  "engUnits": "psi" },
+  { "udt": "Tag", "id": "tag.P101.DischPress",     "name": "DischPress", "dataType": "Float8", "scanClassMs": 500,  "historyEnabled": true,  "engUnits": "psi" }
+]

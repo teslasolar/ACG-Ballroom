@@ -1,0 +1,15 @@
+{
+  "udt": "HeaderBar",
+  "kind": "organism",
+  "doc": "top H bar: brand + subtitle + step counter + theme toggle",
+  "members": {
+    "id": "str",
+    "brand": "udt:Chip",
+    "subtitle": "str",
+    "phase": "udt:Chip?",
+    "stepCt": "udt:Stepper?",
+    "themeToggle": "udt:Button?"
+  },
+  "uses": ["Chip", "Stepper", "Button"],
+  "css": ".H"
+}
