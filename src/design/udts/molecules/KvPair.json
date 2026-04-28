@@ -1,0 +1,10 @@
+{
+  "udt": "KvPair",
+  "kind": "molecule",
+  "doc": "single line of KeyValue with consistent spacing",
+  "members": {
+    "id": "str",
+    "pair": "udt:KeyValue"
+  },
+  "uses": ["KeyValue"]
+}

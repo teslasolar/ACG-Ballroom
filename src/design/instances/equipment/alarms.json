@@ -1,0 +1,8 @@
+[
+  { "udt": "Alarm", "id": "alm.TK101.M1.Fault",     "name": "M1 Fault",       "source": "tag.TK101.M1.Fault", "mode": "equal",  "setpoint": 1,    "priority": "high",     "ackRequired": true },
+  { "udt": "Alarm", "id": "alm.TK101.M1.Overcurrent","name": "M1 Overcurrent", "source": "tag.TK101.M1.Amps",  "mode": "above",  "setpoint": 18.0, "priority": "high",     "ackRequired": true },
+  { "udt": "Alarm", "id": "alm.TK101.LevelHigh",    "name": "Tank Level High","source": "tag.TK101.Level",    "mode": "above",  "setpoint": 90.0, "priority": "critical", "ackRequired": true },
+  { "udt": "Alarm", "id": "alm.TK101.LevelLow",     "name": "Tank Level Low", "source": "tag.TK101.Level",    "mode": "below",  "setpoint": 5.0,  "priority": "medium",   "ackRequired": false },
+  { "udt": "Alarm", "id": "alm.P101.Fault",         "name": "P101 Fault",     "source": "tag.P101.Fault",     "mode": "equal",  "setpoint": 1,    "priority": "high",     "ackRequired": true },
+  { "udt": "Alarm", "id": "alm.P101.LowFlow",       "name": "P101 Low Flow",  "source": "tag.P101.Flow",      "mode": "below",  "setpoint": 5.0,  "priority": "medium",   "ackRequired": false }
+]

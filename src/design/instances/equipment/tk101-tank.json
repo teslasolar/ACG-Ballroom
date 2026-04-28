@@ -1,0 +1,28 @@
+{
+  "udt": "Tank",
+  "id": "eq.TK101",
+  "name": "TK-101 Mash Tank",
+  "tagPath": "[default]Plant/TK101",
+  "area": "Production/Line1",
+  "level": "tag.TK101.Level",
+  "temp":  "tag.TK101.Temp",
+  "agitator": {
+    "udt": "Motor",
+    "id": "eq.TK101.M1.embed",
+    "name": "TK-101 Agitator (embedded)",
+    "tagPath": "[default]Plant/TK101/M1",
+    "amps": "tag.TK101.M1.Amps",
+    "running": "tag.TK101.M1.Running",
+    "fault": "tag.TK101.M1.Fault"
+  },
+  "inletPump": {
+    "udt": "Pump",
+    "id": "eq.TK101.InletPump.embed",
+    "name": "TK-101 Inlet Pump",
+    "tagPath": "[default]Plant/TK101/Inlet",
+    "amps": "tag.P101.Amps",
+    "running": "tag.P101.Running",
+    "fault": "tag.P101.Fault",
+    "flow": "tag.P101.Flow"
+  }
+}

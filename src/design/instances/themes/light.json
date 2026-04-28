@@ -1,0 +1,21 @@
+{
+  "udt": "ThemeBundle",
+  "id": "theme.light",
+  "name": "Lights On",
+  "scheme": "light",
+  "tokens": [
+    { "udt": "ThemeToken", "id": "tok.light.bg",   "varName": "--bg",   "value": "#f4f6fb", "role": "bg" },
+    { "udt": "ThemeToken", "id": "tok.light.card", "varName": "--card", "value": "#ffffff", "role": "surface" },
+    { "udt": "ThemeToken", "id": "tok.light.s2",   "varName": "--s2",   "value": "#eef1f7", "role": "surface" },
+    { "udt": "ThemeToken", "id": "tok.light.b",    "varName": "--b",    "value": "#c8d0de", "role": "border" },
+    { "udt": "ThemeToken", "id": "tok.light.t",    "varName": "--t",    "value": "#3a4660", "role": "text" },
+    { "udt": "ThemeToken", "id": "tok.light.t2",   "varName": "--t2",   "value": "#7a8499", "role": "text" },
+    { "udt": "ThemeToken", "id": "tok.light.ig",   "varName": "--ig",   "value": "#0b6fb5", "role": "accent" },
+    { "udt": "ThemeToken", "id": "tok.light.ign",  "varName": "--ign",  "value": "#c64b00", "role": "accent" },
+    { "udt": "ThemeToken", "id": "tok.light.ok",   "varName": "--ok",   "value": "#0e8a4f", "role": "status" },
+    { "udt": "ThemeToken", "id": "tok.light.er",   "varName": "--er",   "value": "#c81c3a", "role": "status" },
+    { "udt": "ThemeToken", "id": "tok.light.wr",   "varName": "--wr",   "value": "#a86400", "role": "status" },
+    { "udt": "ThemeToken", "id": "tok.light.gold", "varName": "--gold", "value": "#a8830a", "role": "accent" },
+    { "udt": "ThemeToken", "id": "tok.light.wh",   "varName": "--wh",   "value": "#0d1117", "role": "text" }
+  ]
+}

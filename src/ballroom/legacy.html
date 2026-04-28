@@ -1,0 +1,402 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>⚒ ACG Ballroom · Voxel Guild Hall</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=IBM+Plex+Sans:wght@700;800&display=swap');
+*{margin:0;box-sizing:border-box}
+body{background:#0d1117;overflow:hidden;height:100vh;cursor:crosshair}
+#three{position:fixed;inset:0}
+#hud{position:fixed;top:0;left:0;right:0;z-index:2;display:flex;justify-content:space-between;padding:6px 12px;font:9px 'IBM Plex Mono',monospace;color:#484f58;pointer-events:none}
+#banner{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;pointer-events:none;text-align:center;transition:opacity 1s;opacity:1}
+#banner h1{font-family:'IBM Plex Sans',sans-serif;font-size:clamp(24px,6vw,64px);font-weight:800;color:#e3b341;text-shadow:0 0 40px rgba(227,179,65,.3);letter-spacing:2px}
+#banner h2{font:14px 'IBM Plex Mono',monospace;color:#484f58;margin-top:4px;letter-spacing:4px}
+#banner .sub{font:10px 'IBM Plex Mono',monospace;color:#30363d;margin-top:8px}
+#minimap{position:fixed;bottom:40px;right:12px;width:120px;height:120px;z-index:2;border:1px solid #30363d;background:rgba(13,17,23,.8);border-radius:4px;overflow:hidden}
+#minimap canvas{width:100%;height:100%}
+#bar{position:fixed;bottom:0;left:0;right:0;z-index:2;height:32px;display:flex;align-items:center;padding:0 12px;gap:8px;background:rgba(13,17,23,.9);border-top:1px solid #30363d;font:8px 'IBM Plex Mono',monospace;color:#484f58}
+#bar span{color:#e3b341}
+#chatBox{position:fixed;bottom:36px;left:12px;width:280px;z-index:2;background:rgba(13,17,23,.85);border:1px solid #30363d;border-radius:6px;padding:6px;font:9px 'IBM Plex Mono',monospace;max-height:180px;display:flex;flex-direction:column}
+#chatLog{flex:1;overflow-y:auto;max-height:130px;color:#c9d1d9;line-height:1.5}
+#chatLog div{padding:1px 0}
+#chatLog .sys{color:#484f58;font-style:italic}
+#chatLog .name{color:#e3b341}
+#chatIn{background:#161b22;border:1px solid #30363d;color:#c9d1d9;font:9px 'IBM Plex Mono',monospace;padding:4px 6px;border-radius:3px;width:100%;margin-top:4px}
+#chatIn:focus{outline:none;border-color:#58a6ff}
+.bt{background:#161b22;border:1px solid #30363d;color:#484f58;font:8px 'IBM Plex Mono',monospace;padding:2px 10px;cursor:pointer;border-radius:3px}
+.bt:hover{border-color:#58a6ff;color:#58a6ff}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head><body>
+<div id="three"></div>
+<div id="banner">
+<h1>⚒ ACG BALLROOM ⚒</h1>
+<h2>AI CRAFTSPEOPLE GUILD</h2>
+<div class="sub">WASD to move · mouse to look · click to enter</div>
+</div>
+<div id="hud">
+<span id="pos">x:0 y:0 z:0</span>
+<span>⚒ ACG BALLROOM</span>
+<span id="room">MAIN HALL</span>
+</div>
+<div id="minimap"><canvas id="mapC" width="120" height="120"></canvas></div>
+<div id="chatBox">
+<div id="chatLog"></div>
+<input id="chatIn" placeholder="say something..." maxlength="200">
+</div>
+<div id="bar">
+<span>⚒</span> Voxel Guild Hall
+<span style="flex:1"></span>
+<button class="bt" onclick="toggleRec()" id="rB">● REC</button>
+<span id="fps">—</span>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+
+// ═══ THREE.JS SETUP ═══
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x0d1117);
+scene.fog=new THREE.FogExp2(0x0d1117,.015);
+const camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.1,200);
+camera.position.set(0,2,15);
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+$('three').appendChild(renderer.domElement);
+
+// ═══ MATERIALS ═══
+const M={
+floor:new THREE.MeshStandardMaterial({color:0x161b22,metalness:.1,roughness:.8}),
+wall:new THREE.MeshStandardMaterial({color:0x21262d,metalness:.2,roughness:.6}),
+trim:new THREE.MeshStandardMaterial({color:0xe3b341,metalness:.7,roughness:.2,emissive:0x443300}),
+pillar:new THREE.MeshStandardMaterial({color:0x30363d,metalness:.4,roughness:.3}),
+glass:new THREE.MeshStandardMaterial({color:0x58a6ff,metalness:.1,roughness:.1,transparent:true,opacity:.15}),
+anvil:new THREE.MeshStandardMaterial({color:0x484f58,metalness:.8,roughness:.3}),
+ember:new THREE.MeshStandardMaterial({color:0xf57c20,metalness:.2,roughness:.4,emissive:0x662200}),
+banner_m:new THREE.MeshStandardMaterial({color:0x0d1117,metalness:.1,roughness:.8,emissive:0x111111}),
+green:new THREE.MeshStandardMaterial({color:0x3fb950,metalness:.3,roughness:.5,emissive:0x112211}),
+red:new THREE.MeshStandardMaterial({color:0xf85149,metalness:.3,roughness:.5,emissive:0x221111}),
+blue:new THREE.MeshStandardMaterial({color:0x58a6ff,metalness:.3,roughness:.5,emissive:0x111122}),
+purple:new THREE.MeshStandardMaterial({color:0xbc8cff,metalness:.3,roughness:.5,emissive:0x110022}),
+};
+
+// ═══ VOXEL BUILDER ═══
+function vox(x,y,z,sx,sy,sz,mat,cast,recv){
+const g=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),mat);
+g.position.set(x+sx/2,y+sy/2,z+sz/2);
+if(cast)g.castShadow=true;if(recv)g.receiveShadow=true;
+scene.add(g);return g;
+}
+function cyl(x,y,z,r,h,mat){
+const g=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,8),mat);
+g.position.set(x,y+h/2,z);g.castShadow=true;scene.add(g);return g;
+}
+
+// ═══ BUILD THE BALLROOM ═══
+const W=30,D=40,H=8; // width, depth, height
+
+// Floor
+vox(-W/2,-.1,-D/2,W,.1,D,M.floor,false,true);
+// Checkered floor pattern
+for(let x=-W/2;x<W/2;x+=2){for(let z=-D/2;z<D/2;z+=2){
+if((Math.floor(x/2)+Math.floor(z/2))%2===0)
+vox(x,0,z,2,.02,2,M.pillar,false,true);
+}}
+
+// Walls
+vox(-W/2,0,-D/2,.4,H,D,M.wall,true,true);   // left
+vox(W/2-.4,0,-D/2,.4,H,D,M.wall,true,true);  // right
+vox(-W/2,0,-D/2,W,H,.4,M.wall,true,true);     // back
+// Front wall with entrance gap
+vox(-W/2,0,D/2-0.4,W/2-3,.1+H,.4,M.wall,true,true); // front left
+vox(3,0,D/2-0.4,W/2-3,H,.4,M.wall,true,true);        // front right
+vox(-3,H-2,D/2-0.4,6,2,.4,M.wall,true,true);          // above door
+
+// Ceiling
+vox(-W/2,H,-D/2,W,.3,D,M.wall,false,false);
+
+// ═══ GOLD TRIM ═══
+// Floor trim
+vox(-W/2,.01,-D/2,W,.05,.15,M.trim);vox(-W/2,.01,D/2-.15,W,.05,.15,M.trim);
+vox(-W/2,.01,-D/2,.15,.05,D,M.trim);vox(W/2-.15,.01,-D/2,.15,.05,D,M.trim);
+// Ceiling trim
+vox(-W/2,H-.1,-D/2,W,.1,.15,M.trim);vox(-W/2,H-.1,D/2-.15,W,.1,.15,M.trim);
+
+// ═══ PILLARS (6 per side) ═══
+const pillars=[];
+for(let i=0;i<6;i++){
+const z=-D/2+4+i*(D-8)/5;
+const pL=cyl(-W/2+2,0,z,.4,H,M.pillar);
+const pR=cyl(W/2-2,0,z,.4,H,M.pillar);
+pillars.push(pL,pR);
+// Gold rings on pillars
+const ring=new THREE.Mesh(new THREE.TorusGeometry(.5,.06,6,12),M.trim);
+ring.position.set(-W/2+2,3,z);ring.rotation.x=Math.PI/2;scene.add(ring);
+const ring2=ring.clone();ring2.position.x=W/2-2;scene.add(ring2);
+}
+
+// ═══ STAGE (back of hall) ═══
+vox(-8,.0,-D/2+1,16,.6,6,M.pillar,true,true);  // stage platform
+vox(-8,.6,-D/2+1,16,.05,6,M.trim);              // gold top
+
+// Anvil on stage (the ACG symbol)
+const anvilBase=vox(-1,0.65,-D/2+3.5,2,.8,1.5,M.anvil,true,false);
+const anvilTop=vox(-1.3,1.45,-D/2+3.2,2.6,.3,2,M.anvil,true,false);
+const anvilHorn=cyl(0,1.6,-D/2+4.2,.15,.8,M.anvil);
+anvilHorn.rotation.z=Math.PI/2;anvilHorn.position.x=2;
+
+// Hammer (floating above anvil, rotating)
+const hammerGroup=new THREE.Group();
+const hammerHead=new THREE.Mesh(new THREE.BoxGeometry(.4,.3,.6),M.trim);
+const hammerHandle=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,1.2,6),M.pillar);
+hammerHandle.position.y=-.6;hammerGroup.add(hammerHead,hammerHandle);
+hammerGroup.position.set(0,3.5,-D/2+4);
+scene.add(hammerGroup);
+
+// ═══ GUILD BANNERS (hanging from ceiling) ═══
+const bannerColors=[M.green,M.red,M.blue,M.purple,M.trim,M.ember];
+const bannerLabels=['CRAFT','ETHICS','CODE','REVIEW','GUILD','FORGE'];
+const banners=[];
+for(let i=0;i<6;i++){
+const z=-D/2+6+i*5.5;
+const side=i%2===0?-1:1;
+const b=vox(side*(W/2-1.5),H-3.5,z-.4,.15,3,.8,bannerColors[i],true,false);
+banners.push({mesh:b,baseY:H-3.5+1.5});
+// Small gold rod at top
+vox(side*(W/2-1.8),H-.8,z-.6,.8,.1,1.2,M.trim);
+}
+
+// ═══ WINDOWS (glass panels in walls) ═══
+for(let i=0;i<4;i++){
+const z=-D/2+5+i*8;
+// Left wall windows
+vox(-W/2+.1,2,z,0.2,3,3,M.glass);
+// Right wall windows
+vox(W/2-.3,2,z,0.2,3,3,M.glass);
+}
+
+// ═══ TABLES (round, for guild meetings) ═══
+const tables=[];
+for(let i=0;i<3;i++){
+const z=-5+i*8;
+const tbl=cyl(-5,0,z,1.5,.8,M.pillar);
+const top=cyl(-5,.8,z,1.6,.05,M.trim);
+tables.push(tbl);
+// Right side tables
+const tbl2=cyl(5,0,z,1.5,.8,M.pillar);
+cyl(5,.8,z,1.6,.05,M.trim);
+}
+
+// ═══ FORGE AREA (back-left corner) ═══
+// Fire pit
+const firePit=cyl(-10,.1,-D/2+3,1.2,.4,M.anvil);
+const fireGlow=new THREE.PointLight(0xff6622,2,12);
+fireGlow.position.set(-10,1.5,-D/2+3);scene.add(fireGlow);
+// Embers (particles)
+const embers=[];
+for(let i=0;i<20;i++){
+const e=new THREE.Mesh(new THREE.BoxGeometry(.08,.08,.08),M.ember.clone());
+e.position.set(-10+Math.random()*2-.5,1+Math.random()*2,-D/2+3+Math.random()*2-1);
+scene.add(e);embers.push({mesh:e,vy:.01+Math.random()*.02,base:e.position.clone()});
+}
+
+// ═══ CHANDELIER (center of hall) ═══
+const chandGroup=new THREE.Group();
+const chandRing=new THREE.Mesh(new THREE.TorusGeometry(3,.08,6,24),M.trim);
+chandRing.rotation.x=Math.PI/2;chandGroup.add(chandRing);
+// Candle points on chandelier
+for(let i=0;i<8;i++){
+const a=i/8*Math.PI*2;
+const candle=new THREE.Mesh(new THREE.CylinderGeometry(.04,.04,.3,4),M.trim);
+candle.position.set(Math.cos(a)*3,.15,Math.sin(a)*3);
+chandGroup.add(candle);
+const flame=new THREE.PointLight(0xffaa44,.3,6);
+flame.position.copy(candle.position);flame.position.y+=.3;
+chandGroup.add(flame);
+}
+// Chain
+const chain=new THREE.Mesh(new THREE.CylinderGeometry(.02,.02,2,4),M.pillar);
+chain.position.y=1;chandGroup.add(chain);
+chandGroup.position.set(0,H-2.5,0);scene.add(chandGroup);
+
+// ═══ LIGHTING ═══
+const ambient=new THREE.AmbientLight(0x161b22,.6);scene.add(ambient);
+const mainLight=new THREE.DirectionalLight(0xffeedd,.4);
+mainLight.position.set(5,H-1,5);mainLight.castShadow=true;
+mainLight.shadow.mapSize.width=1024;mainLight.shadow.mapSize.height=1024;
+scene.add(mainLight);
+
+// ═══ FIRST-PERSON CONTROLS ═══
+let locked=false,yaw=0,pitch=0;
+const keys={};const vel=new THREE.Vector3();
+const SPEED=.08,LOOK=.002;
+
+renderer.domElement.addEventListener('click',()=>{
+if(!locked){renderer.domElement.requestPointerLock();$('banner').style.opacity='0';}
+});
+document.addEventListener('pointerlockchange',()=>{locked=!!document.pointerLockElement;});
+document.addEventListener('mousemove',e=>{
+if(!locked)return;
+yaw-=e.movementX*LOOK;
+pitch-=e.movementY*LOOK;
+pitch=Math.max(-Math.PI/2+.1,Math.min(Math.PI/2-.1,pitch));
+});
+document.addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;});
+document.addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});
+
+// Chat
+$('chatIn').addEventListener('keydown',e=>{
+if(e.key==='Enter'){
+const msg=$('chatIn').value.trim();
+if(!msg)return;
+chatAdd('You',msg);
+$('chatIn').value='';
+e.stopPropagation();
+}
+});
+$('chatIn').addEventListener('keydown',e=>e.stopPropagation());
+
+function chatAdd(name,msg){
+const d=document.createElement('div');
+d.innerHTML=`<span class="name">${name}:</span> ${msg}`;
+$('chatLog').appendChild(d);
+$('chatLog').scrollTop=1e6;
+}
+function chatSys(msg){
+const d=document.createElement('div');d.className='sys';d.textContent=msg;
+$('chatLog').appendChild(d);$('chatLog').scrollTop=1e6;
+}
+chatSys('⚒ Welcome to the ACG Ballroom');
+chatSys('WASD to move · Mouse to look · Click to enter');
+chatSys('"You shall not turn this guild into a den of thieves!"');
+
+// ═══ COLLISION (simple AABB) ═══
+function canMove(x,z){
+const hw=W/2-.8,hd=D/2-.8;
+return x>-hw&&x<hw&&z>-hd&&z<hd;
+}
+
+// ═══ MINIMAP ═══
+const mapC=$('mapC').getContext('2d');
+function drawMap(){
+mapC.fillStyle='#0d1117';mapC.fillRect(0,0,120,120);
+// Room outline
+mapC.strokeStyle='#30363d';mapC.lineWidth=1;
+mapC.strokeRect(10,10,100,100);
+// Pillars
+mapC.fillStyle='#30363d';
+for(let i=0;i<6;i++){
+const mz=10+4/D*100+i*(D-8)/5/D*100;
+mapC.fillRect(14,mz,3,3);mapC.fillRect(103,mz,3,3);
+}
+// Tables
+mapC.fillStyle='#e3b341';
+tables.forEach(t=>{
+const mx=60+(t.position.x/W)*100;
+const mz=10+((t.position.z+D/2)/D)*100;
+mapC.beginPath();mapC.arc(mx,mz,3,0,Math.PI*2);mapC.fill();
+});
+// Stage
+mapC.fillStyle='#484f58';mapC.fillRect(30,12,60,8);
+// Player
+const px=60+(camera.position.x/W)*100;
+const pz=10+((camera.position.z+D/2)/D)*100;
+mapC.fillStyle='#58a6ff';
+mapC.beginPath();mapC.arc(px,pz,3,0,Math.PI*2);mapC.fill();
+// Direction arrow
+const ax=px+Math.sin(yaw)*6,az=pz-Math.cos(yaw)*6;
+mapC.strokeStyle='#58a6ff';mapC.lineWidth=1.5;
+mapC.beginPath();mapC.moveTo(px,pz);mapC.lineTo(ax,az);mapC.stroke();
+}
+
+// ═══ ROOM DETECTION ═══
+function getRoom(){
+const z=camera.position.z,x=camera.position.x;
+if(z<-D/2+7)return'STAGE';
+if(x<-7&&z<-D/2+10)return'FORGE';
+if(z>D/2-3)return'ENTRANCE';
+return'MAIN HALL';
+}
+
+// ═══ RENDER LOOP ═══
+let lastT=0,frameCount=0;
+function render(now){
+requestAnimationFrame(render);
+const dt=(now-lastT)/1000;lastT=now;frameCount++;
+
+// Movement
+const forward=new THREE.Vector3(-Math.sin(yaw),0,-Math.cos(yaw));
+const right=new THREE.Vector3(Math.cos(yaw),0,-Math.sin(yaw));
+vel.multiplyScalar(.85);
+if(keys['w'])vel.add(forward.clone().multiplyScalar(SPEED));
+if(keys['s'])vel.add(forward.clone().multiplyScalar(-SPEED));
+if(keys['a'])vel.add(right.clone().multiplyScalar(-SPEED));
+if(keys['d'])vel.add(right.clone().multiplyScalar(SPEED));
+
+const newX=camera.position.x+vel.x;
+const newZ=camera.position.z+vel.z;
+if(canMove(newX,newZ)){camera.position.x=newX;camera.position.z=newZ;}
+camera.position.y=2;
+
+// Camera rotation
+camera.rotation.order='YXZ';
+camera.rotation.y=yaw;
+camera.rotation.x=pitch;
+
+// Animate hammer (rotating float above anvil)
+const t=now/1000;
+hammerGroup.position.y=3.2+Math.sin(t*1.5)*.3;
+hammerGroup.rotation.y=t*.5;
+hammerGroup.rotation.z=Math.sin(t*2)*.15;
+
+// Chandelier gentle sway
+chandGroup.rotation.z=Math.sin(t*.3)*.02;
+chandGroup.rotation.x=Math.sin(t*.4)*.01;
+
+// Embers float + reset
+embers.forEach(e=>{
+e.mesh.position.y+=e.vy;
+e.mesh.position.x+=Math.sin(t*2+e.base.x*10)*.005;
+e.mesh.rotation.x=t*2;e.mesh.rotation.z=t;
+if(e.mesh.position.y>e.base.y+3){e.mesh.position.y=e.base.y;e.mesh.position.x=e.base.x+Math.random()-.5;}
+e.mesh.material.emissive.setHSL(.08+Math.sin(t+e.base.x)*.03,1,.2+Math.sin(t*3+e.base.z)*.1);
+});
+
+// Fire glow flicker
+fireGlow.intensity=1.5+Math.sin(t*8)*.5+Math.sin(t*13)*.3;
+fireGlow.color.setHSL(.06+Math.sin(t*5)*.02,1,.5);
+
+// Banners gentle wave
+banners.forEach((b,i)=>{
+b.mesh.rotation.x=Math.sin(t*.5+i)*.03;
+});
+
+// Gold trim pulse
+M.trim.emissive.setHSL(.12,1,.05+Math.sin(t)*.02);
+
+renderer.render(scene,camera);
+
+// HUD
+$('pos').textContent=`x:${camera.position.x.toFixed(1)} z:${camera.position.z.toFixed(1)}`;
+$('room').textContent=getRoom();
+if(frameCount%10===0){drawMap();$('fps').textContent=Math.round(1/dt)+' fps';}
+}
+render(0);
+
+// Resize
+window.onresize=()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);};
+
+// ═══ RECORDER ═══
+let rec=null,ch=[];
+async function toggleRec(){const b=$('rB');
+if(!rec||rec.state!=='recording'){
+try{const s=await navigator.mediaDevices.getDisplayMedia({video:{displaySurface:'browser',frameRate:30},audio:true,preferCurrentTab:true,selfBrowserSurface:'include',systemAudio:'include'});
+const mi=MediaRecorder.isTypeSupported('video/mp4;codecs=avc1,opus')?'video/mp4;codecs=avc1,opus':'video/webm';
+rec=new MediaRecorder(s,{mimeType:mi,videoBitsPerSecond:10e6});ch=[];
+rec.ondataavailable=e=>{if(e.data.size)ch.push(e.data)};
+rec.onstop=()=>{s.getTracks().forEach(t=>t.stop());const bl=new Blob(ch,{type:mi}),u=URL.createObjectURL(bl),a=document.createElement('a');
+a.href=u;a.download='ACG_Ballroom'+(mi.includes('mp4')?'.mp4':'.webm');a.click();b.textContent='● REC';b.classList.remove('on')};
+s.getVideoTracks()[0].onended=()=>{if(rec?.state==='recording')rec.stop()};
+rec.start(1000);b.textContent='■ STOP';b.classList.add('on');}catch(e){}}
+else{rec.stop();}}
+window.toggleRec=toggleRec;
+</script></body></html>

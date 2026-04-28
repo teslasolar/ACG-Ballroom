@@ -1,0 +1,15 @@
+{
+  "udt": "Pump",
+  "id": "eq.P101",
+  "name": "P-101 Transfer Pump",
+  "tagPath": "[default]Plant/P101",
+  "area": "Utilities",
+  "pos": [-10, 0, -17],
+  "geom": "fire",
+  "amps":       "tag.P101.Amps",
+  "running":    "tag.P101.Running",
+  "fault":      "tag.P101.Fault",
+  "flow":       "tag.P101.Flow",
+  "suctPress":  "tag.P101.SuctPress",
+  "dischPress": "tag.P101.DischPress"
+}

@@ -1,0 +1,14 @@
+{
+  "udt": "Room",
+  "kind": "data",
+  "doc": "ballroom sub-area; rooms can nest sub-rooms (overlap allowed)",
+  "members": {
+    "id": "str",
+    "name": "str",
+    "kind": "enum:hall|stage|forge|entrance|annex",
+    "bbox": "float[]",
+    "tags": "ref<Tag>[]?",
+    "equipment": "ref<Equipment>[]?",
+    "subRooms": "udt:Room[]?"
+  }
+}

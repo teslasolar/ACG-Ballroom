@@ -1,0 +1,11 @@
+{
+  "udt": "KeyValue",
+  "kind": "atom",
+  "doc": "k:v inline pair styled as <span class=k>k</span> <span class=v>v</span>",
+  "members": {
+    "id": "str",
+    "k": "str",
+    "v": "str",
+    "tone": "enum:ok|err|warn|info|muted|default"
+  }
+}

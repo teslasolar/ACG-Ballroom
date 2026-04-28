@@ -1,0 +1,16 @@
+{
+  "udt": "Tag",
+  "kind": "data",
+  "doc": "Ignition-style tag reference: name + opc binding + scan/history",
+  "members": {
+    "id": "str",
+    "name": "str",
+    "dataType": "enum:Float8|Float4|Int4|Int8|Boolean|String",
+    "opcServer": "str?",
+    "opcItemPath": "str?",
+    "scanClassMs": "int",
+    "historyEnabled": "bool",
+    "engUnits": "str?",
+    "tooltip": "str?"
+  }
+}

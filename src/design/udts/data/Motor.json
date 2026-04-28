@@ -1,0 +1,14 @@
+{
+  "udt": "Motor",
+  "kind": "data",
+  "extends": "Equipment",
+  "doc": "Equipment + electrical and run state tags",
+  "members": {
+    "amps": "ref<Tag>",
+    "speed": "ref<Tag>?",
+    "running": "ref<Tag>",
+    "fault": "ref<Tag>",
+    "runHours": "ref<Tag>?",
+    "hoa": "ref<Tag>?"
+  }
+}

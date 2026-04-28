@@ -1,0 +1,12 @@
+{
+  "udt": "ChatPanel",
+  "kind": "organism",
+  "doc": "scrolling log + input (ballroom)",
+  "members": {
+    "id": "str",
+    "maxLines": "int",
+    "placeholder": "str",
+    "systemMsgs": "str[]?"
+  },
+  "css": "#chatBox"
+}

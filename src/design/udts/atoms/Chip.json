@@ -1,0 +1,10 @@
+{
+  "udt": "Chip",
+  "kind": "atom",
+  "doc": "small badge for phase/status tags",
+  "members": {
+    "id": "str",
+    "text": "str",
+    "tone": "enum:default|accent|ok|warn|err|info"
+  }
+}

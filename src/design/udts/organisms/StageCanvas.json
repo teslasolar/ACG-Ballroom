@@ -1,0 +1,13 @@
+{
+  "udt": "StageCanvas",
+  "kind": "organism",
+  "doc": "center C area: holds slides or 3D scene",
+  "members": {
+    "id": "str",
+    "mode": "enum:slides|three|both",
+    "slides": "ref<TutorialStep>[]?",
+    "scene": "ref<Ballroom>?",
+    "drop": "udt:DropZone?"
+  },
+  "css": ".C"
+}

@@ -1,0 +1,12 @@
+{
+  "udt": "SidebarLeft",
+  "kind": "organism",
+  "doc": "left column: stack of Sections",
+  "members": {
+    "id": "str",
+    "sections": "udt:Section[]",
+    "width": "str?"
+  },
+  "uses": ["Section"],
+  "css": ".L"
+}

@@ -1,0 +1,11 @@
+{
+  "udt": "AlarmSet",
+  "kind": "data",
+  "doc": "nested bundle of Alarms; member of Equipment",
+  "members": {
+    "id": "str",
+    "name": "str",
+    "alarms": "udt:Alarm[]"
+  },
+  "uses": ["Alarm"]
+}

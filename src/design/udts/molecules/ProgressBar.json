@@ -1,0 +1,13 @@
+{
+  "udt": "ProgressBar",
+  "kind": "molecule",
+  "doc": "gradient bar with click-to-seek",
+  "members": {
+    "id": "str",
+    "value": "float",
+    "max": "float",
+    "gradient": "str[]?",
+    "seekable": "bool"
+  },
+  "css": "#prog"
+}

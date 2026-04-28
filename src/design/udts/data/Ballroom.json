@@ -1,0 +1,14 @@
+{
+  "udt": "Ballroom",
+  "kind": "data",
+  "doc": "top-level voxel space; composes Rooms",
+  "members": {
+    "id": "str",
+    "name": "str",
+    "size": "float[]",
+    "spawn": "float[]",
+    "rooms": "udt:Room[]",
+    "ambientHex": "color?"
+  },
+  "uses": ["Room"]
+}
