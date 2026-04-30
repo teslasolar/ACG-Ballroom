@@ -1,0 +1,21 @@
+{
+  "udt": "RoomTemplate",
+  "kind": "data",
+  "doc": "Reusable room shape definition. Instances reference a templateId and are placed via WorldRoom. Supports minecraft-style materials per surface.",
+  "members": {
+    "id":        "str",
+    "name":      "str",
+    "kind":      "enum:hall|stage|forge|theater|arena|garden|bridge|void",
+    "size":      "float[]",
+    "spawn":     "float[]?",
+    "ambientHex": "color?",
+    "floorMat":  "enum:floor|wall|trim|pillar|glass|anvil|ember?",
+    "wallMat":   "enum:floor|wall|trim|pillar|glass|anvil|ember?",
+    "ceilMat":   "enum:floor|wall|trim|pillar|glass|anvil|ember?",
+    "pillars":   "bool?",
+    "rooms":     "udt:Room[]?",
+    "screens":   "udt:WallScreen[]?",
+    "portals":   "udt:Portal[]?"
+  },
+  "uses": ["Room", "WallScreen", "Portal"]
+}

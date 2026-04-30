@@ -1,0 +1,12 @@
+{
+  "udt": "VoxelBlock",
+  "kind": "data",
+  "doc": "A player-placed block in the world, Minecraft-style. pos is world [x, y, z] of the block's min corner (1x1x1 unit). mat references a material key from the scene palette.",
+  "members": {
+    "id":  "str",
+    "pos": "float[]",
+    "mat": "enum:floor|wall|trim|pillar|glass|anvil|ember",
+    "placedBy": "str?",
+    "placedAt": "str?"
+  }
+}

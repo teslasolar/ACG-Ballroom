@@ -1,0 +1,19 @@
+{
+  "udt": "RoomTemplate",
+  "id": "template.arena",
+  "name": "Arena",
+  "kind": "arena",
+  "size": [40, 10, 40],
+  "spawn": [0, 2, 15],
+  "ambientHex": "#110d1a",
+  "floorMat": "pillar",
+  "wallMat": "wall",
+  "ceilMat": "wall",
+  "pillars": true,
+  "rooms": [
+    {
+      "udt": "Room", "id": "rm.arena.floor", "name": "Arena Floor",
+      "kind": "stage", "bbox": [-20, 0, -20,  20, 10,  20]
+    }
+  ]
+}

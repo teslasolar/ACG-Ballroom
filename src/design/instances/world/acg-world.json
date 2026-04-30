@@ -1,0 +1,75 @@
+{
+  "udt": "World",
+  "id": "world.acg",
+  "name": "ACG Voxel World",
+  "size": [1000, 256, 1000],
+  "spawn": [0, 2, 6],
+  "skyHex": "#0d1117",
+  "fogDensity": 0.004,
+  "rooms": [
+    {
+      "udt": "WorldRoom",
+      "id": "wr.acg-main",
+      "name": "ACG Main Ballroom",
+      "templateId": "br.acg-main",
+      "worldPos": [0, 0, 0],
+      "facing": 0,
+      "tags": ["hub", "main"]
+    },
+    {
+      "udt": "WorldRoom",
+      "id": "wr.acg-lobby",
+      "name": "ACG Lobby",
+      "templateId": "br.acg-lobby",
+      "worldPos": [-120, 0, 0],
+      "facing": 0,
+      "tags": ["lobby"]
+    },
+    {
+      "udt": "WorldRoom",
+      "id": "wr.konomi",
+      "name": "Konomi Room",
+      "templateId": "br.konomi",
+      "worldPos": [120, 0, 60],
+      "facing": 0,
+      "tags": ["konomi", "karaoke"]
+    },
+    {
+      "udt": "WorldRoom",
+      "id": "wr.arena",
+      "name": "Arena",
+      "templateId": "template.arena",
+      "worldPos": [0, 0, -140],
+      "facing": 0,
+      "tags": ["arena", "pvp"]
+    },
+    {
+      "udt": "WorldRoom",
+      "id": "wr.theater",
+      "name": "Theater",
+      "templateId": "template.theater",
+      "worldPos": [120, 0, -60],
+      "facing": 0,
+      "tags": ["theater", "cinema"]
+    },
+    {
+      "udt": "WorldRoom",
+      "id": "wr.skybridge",
+      "name": "Sky Bridge",
+      "templateId": "template.bridge",
+      "worldPos": [0, 30, -70],
+      "facing": 0,
+      "tags": ["bridge", "sky"]
+    },
+    {
+      "udt": "WorldRoom",
+      "id": "wr.forge",
+      "name": "Build Zone",
+      "templateId": "template.forge",
+      "worldPos": [-120, 0, -80],
+      "facing": 0,
+      "tags": ["build", "craft", "blocks"]
+    }
+  ],
+  "blocks": []
+}

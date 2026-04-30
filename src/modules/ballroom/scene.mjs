@@ -1,7 +1,7 @@
 // Three.js scene init. Expects a global THREE (loaded via the CDN <script>
 // tag in the shim). Returns { THREE, scene, camera, renderer, mount }.
 
-export function makeScene({ container, fog = true, bgHex = '#0d1117' }) {
+export function makeScene({ container, fog = true, bgHex = '#0d1117', farPlane = 200 }) {
   const T = window.THREE;
   if (!T) throw new Error('THREE global not loaded — include three.js before importing this module');
 
@@ -9,7 +9,7 @@ export function makeScene({ container, fog = true, bgHex = '#0d1117' }) {
   scene.background = new T.Color(bgHex);
   if (fog) scene.fog = new T.FogExp2(bgHex, 0.015);
 
-  const camera = new T.PerspectiveCamera(70, innerWidth / innerHeight, 0.1, 200);
+  const camera = new T.PerspectiveCamera(70, innerWidth / innerHeight, 0.1, farPlane);
   camera.position.set(0, 2, 15);
 
   const renderer = new T.WebGLRenderer({ antialias: true });

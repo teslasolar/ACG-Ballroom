@@ -1,12 +1,16 @@
 // First-person controls: pointer-lock look + WASD move with simple AABB
 // collision against scene bounds (hw, hd from renderer.bounds).
+// Includes jump (Space) + gravity.
 // Returns { state, update(dt), lock() }.
 
 const SPEED = 0.08;
-const LOOK = 0.002;
+const LOOK  = 0.002;
+const GRAVITY = -22;   // m/s²  (downward)
+const JUMP_VY =  8;    // m/s   (upward impulse)
+const EYE_H   =  2;   // camera eye height above floor
 
 export function makeControls({ THREE, camera, domElement, bounds }) {
-  const state = { yaw: 0, pitch: 0, locked: false, vel: new THREE.Vector3() };
+  const state = { yaw: 0, pitch: 0, locked: false, vel: new THREE.Vector3(), vy: 0, onGround: true };
   const keys = Object.create(null);
 
   domElement.addEventListener('click', () => {
@@ -27,7 +31,14 @@ export function makeControls({ THREE, camera, domElement, bounds }) {
   document.addEventListener('keydown', (e) => {
     // Allow chat input to capture keys when focused
     if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
-    keys[e.key.toLowerCase()] = true;
+    const k = e.key.toLowerCase();
+    keys[k] = true;
+    // Jump impulse on keydown (not held)
+    if ((e.key === ' ' || k === ' ') && state.onGround) {
+      state.vy = JUMP_VY;
+      state.onGround = false;
+      e.preventDefault(); // prevent page scroll
+    }
   });
   document.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
 
@@ -35,7 +46,7 @@ export function makeControls({ THREE, camera, domElement, bounds }) {
     return x > -bounds.hw && x < bounds.hw && z > -bounds.hd && z < bounds.hd;
   }
 
-  function update() {
+  function update(dt = 1 / 60) {
     const fwd = new THREE.Vector3(-Math.sin(state.yaw), 0, -Math.cos(state.yaw));
     const right = new THREE.Vector3(Math.cos(state.yaw), 0, -Math.sin(state.yaw));
     state.vel.multiplyScalar(0.85);
@@ -50,7 +61,19 @@ export function makeControls({ THREE, camera, domElement, bounds }) {
       camera.position.x = nx;
       camera.position.z = nz;
     }
-    camera.position.y = 2;
+
+    // Vertical physics (jump + gravity)
+    state.vy += GRAVITY * dt;
+    const ny = camera.position.y + state.vy * dt;
+    const floor = bounds.floorY !== undefined ? bounds.floorY + EYE_H : EYE_H;
+    if (ny <= floor) {
+      camera.position.y = floor;
+      state.vy = 0;
+      state.onGround = true;
+    } else {
+      camera.position.y = Math.min(ny, (bounds.ceilY !== undefined ? bounds.ceilY : 500) - 0.5);
+      state.onGround = false;
+    }
 
     camera.rotation.order = 'YXZ';
     camera.rotation.y = state.yaw;

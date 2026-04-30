@@ -1,0 +1,33 @@
+{
+  "udt": "RoomTemplate",
+  "id": "template.theater",
+  "name": "Theater",
+  "kind": "theater",
+  "size": [24, 8, 32],
+  "spawn": [0, 2, 12],
+  "ambientHex": "#0a0d11",
+  "floorMat": "floor",
+  "wallMat": "wall",
+  "ceilMat": "wall",
+  "pillars": false,
+  "screens": [
+    {
+      "udt": "WallScreen",
+      "id": "scr.theater.main",
+      "pos": [0, 2.8, -15.5],
+      "facing": 0,
+      "size": [10, 5.5],
+      "frame": "#58a6ff",
+      "glow": "#ffd050",
+      "tabs": [
+        { "udt": "WallTab", "id": "tab.theater.yt", "label": "YouTube", "url": "https://www.youtube.com/embed/live_stream?channel=UCuAXFkgsw1L7xaCfnd5JJOw" }
+      ]
+    }
+  ],
+  "rooms": [
+    {
+      "udt": "Room", "id": "rm.theater.floor", "name": "Theater Floor",
+      "kind": "hall", "bbox": [-12, 0, -16,  12, 8,  16]
+    }
+  ]
+}

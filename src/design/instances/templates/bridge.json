@@ -1,0 +1,19 @@
+{
+  "udt": "RoomTemplate",
+  "id": "template.bridge",
+  "name": "Sky Bridge",
+  "kind": "bridge",
+  "size": [6, 4, 80],
+  "spawn": [0, 2, 35],
+  "ambientHex": "#0d111a",
+  "floorMat": "glass",
+  "wallMat": "trim",
+  "ceilMat": "glass",
+  "pillars": false,
+  "rooms": [
+    {
+      "udt": "Room", "id": "rm.bridge.span", "name": "Sky Bridge Span",
+      "kind": "annex", "bbox": [-3, 0, -40,  3, 4,  40]
+    }
+  ]
+}

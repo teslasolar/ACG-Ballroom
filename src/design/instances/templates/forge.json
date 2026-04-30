@@ -1,0 +1,19 @@
+{
+  "udt": "RoomTemplate",
+  "id": "template.forge",
+  "name": "Build Zone",
+  "kind": "forge",
+  "size": [60, 20, 60],
+  "spawn": [0, 2, 25],
+  "ambientHex": "#110a0a",
+  "floorMat": "anvil",
+  "wallMat": "pillar",
+  "ceilMat": "wall",
+  "pillars": true,
+  "rooms": [
+    {
+      "udt": "Room", "id": "rm.forge.floor", "name": "Build Floor",
+      "kind": "forge", "bbox": [-30, 0, -30,  30, 20,  30]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "udt": "World",
+  "kind": "data",
+  "doc": "A 1000x1000x1000 voxel cube containing multiple positioned rooms. The center [0,Y,0] is the hub. Rooms are connected by traversing the open world (no page reload). Player blocks (VoxelBlock[]) are layered on top of the base geometry.",
+  "members": {
+    "id":        "str",
+    "name":      "str",
+    "size":      "float[]",
+    "spawn":     "float[]",
+    "skyHex":    "color?",
+    "fogDensity": "float?",
+    "rooms":     "udt:WorldRoom[]",
+    "blocks":    "udt:VoxelBlock[]?"
+  },
+  "uses": ["WorldRoom", "VoxelBlock"]
+}

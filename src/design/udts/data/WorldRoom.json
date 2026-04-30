@@ -1,0 +1,16 @@
+{
+  "udt": "WorldRoom",
+  "kind": "data",
+  "doc": "A Ballroom (or RoomTemplate instance) placed at an absolute position in the World. worldPos is the center-floor origin [x, y, z]. templateId may reference a Ballroom id or a RoomTemplate id.",
+  "members": {
+    "id":         "str",
+    "name":       "str",
+    "templateId": "str",
+    "worldPos":   "float[]",
+    "facing":     "float?",
+    "tags":       "str[]?",
+    "screens":    "udt:WallScreen[]?",
+    "portals":    "udt:Portal[]?"
+  },
+  "uses": ["WallScreen", "Portal"]
+}

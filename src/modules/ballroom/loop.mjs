@@ -13,7 +13,7 @@ export function startLoop({
     requestAnimationFrame(tick);
     const dt = (now - lastT) / 1000; lastT = now; frame++;
     const t = now / 1000;
-    controls.update();
+    controls.update(dt);
     ballroomRenderer.animate(t);
     threeRenderer.render(scene, camera);
     if (cssRenderer && cssScene) cssRenderer.render(cssScene, camera);
