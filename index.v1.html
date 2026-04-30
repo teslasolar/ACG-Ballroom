@@ -27,7 +27,6 @@ main{padding:32px;display:grid;gap:16px;align-content:start;max-width:760px;widt
 .app .meta .tag{display:inline-block;padding:2px 6px;border:1px solid var(--b);border-radius:3px;color:var(--accent);letter-spacing:1px}
 .app[data-state=ready] .meta .tag{color:var(--ok);border-color:var(--ok)}
 .app[data-state=wip] .meta .tag{color:var(--ign);border-color:var(--ign)}
-.app .meta .tag{font-weight:700}
 footer{padding:16px 32px;border-top:1px solid var(--b);display:flex;justify-content:space-between;font-size:9px;color:var(--t2)}
 footer a{color:var(--info);text-decoration:none}
 footer a:hover{text-decoration:underline}
@@ -41,22 +40,14 @@ footer a:hover{text-decoration:underline}
 <main>
   <section class="lead">
     <h2>AI Craftspeople Guild</h2>
-    <p>An enterprise-nested ballroom directory: a 1000³ voxel world of connected guild rooms, the original single-room hall, an Ignition tutorial walkthrough, and the SCADA-style backend that drives them all. Pick a door.</p>
+    <p>An enterprise-nested ballroom directory: a voxel guild hall, an Ignition tutorial walkthrough, and the SCADA-style backend that drives both. Pick a door.</p>
   </section>
   <nav class="dir">
-    <a class="app" href="acg_ballroom.html?world=world.acg" data-state="ready">
-      <span class="ico">🌐</span>
-      <div class="body">
-        <h3>ACG World · 7 Rooms</h3>
-        <p>1000³ open world: main hall, lobby, konomi gallery, arena, theater, skybridge, forge — connected by corridors with door arches. WASD + mouse, Space to jump, right-click to place blocks (1-9 hotbar), F to remove. Live minimap.</p>
-      </div>
-      <div class="meta"><span class="tag">NEW</span><div style="margin-top:4px">?world=world.acg</div></div>
-    </a>
     <a class="app" href="acg_ballroom.html" data-state="ready">
       <span class="ico">⚒</span>
       <div class="body">
-        <h3>Voxel Guild Hall · Classic</h3>
-        <p>The original single-room three.js ballroom rendered from the Ballroom UDT instance. WASD to move, mouse to look, click to enter.</p>
+        <h3>Voxel Guild Hall</h3>
+        <p>First-person three.js ballroom rendered from the Ballroom UDT instance. WASD to move, mouse to look, click to enter.</p>
       </div>
       <div class="meta"><span class="tag">READY</span><div style="margin-top:4px">acg_ballroom.html</div></div>
     </a>
