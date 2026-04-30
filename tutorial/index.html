@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>🔥 Ignition · Zero to Gateway · Tutorial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=IBM+Plex+Sans:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="H">
+  <span style="color:var(--ign);font-weight:700;letter-spacing:1px;font-size:8px">🔥 IGNITION</span>
+  <span style="color:var(--b)">│</span>
+  <span class="d">Zero to Gateway · Complete Tutorial</span>
+  <span style="flex:1"></span>
+  <button class="bt" id="themeBt" title="Toggle lights">💡</button>
+  <span class="d" id="phase">READY</span>
+  <span style="color:var(--b)">│</span>
+  <span class="d" id="stepCt">0/24</span>
+</div>
+
+<div class="L">
+  <div class="ph">📋 TUTORIAL STEPS</div>
+  <div class="pb" id="stepTree"></div>
+  <div class="ph">📐 STEP UDT</div>
+  <div class="pb" id="stepUDT">—</div>
+  <div class="ph">🔗 PREREQUISITES</div>
+  <div class="pb" id="prereqs">—</div>
+</div>
+
+<div class="C" id="stage">
+  <div id="drop">
+    <div class="ico">🔥</div>
+    <div class="msg">Drop tutorial audio (optional)</div>
+    <div class="sub">or click ◀ ▶ to navigate manually</div>
+  </div>
+</div>
+
+<div class="R">
+  <div class="ph">⚙️ CURRENT CONFIG</div>
+  <div class="pb" id="config">—</div>
+  <div class="ph">🔑 KEY INFO</div>
+  <div class="pb" id="keyInfo">—</div>
+  <div class="ph">⚠️ COMMON MISTAKES</div>
+  <div class="pb" id="mistakes">—</div>
+  <div class="ph">📡 PORTS &amp; URLS</div>
+  <div class="pb" id="ports" style="font-size:6.5px">
+    <div><span class="k">Gateway:</span> <span class="v">localhost:8088</span></div>
+    <div><span class="k">SSL:</span> <span class="v">localhost:8043</span></div>
+    <div><span class="k">GAN:</span> <span class="v">:8060</span></div>
+    <div><span class="k">OPC-UA:</span> <span class="v">:62541</span></div>
+    <div><span class="k">Designer:</span> <span class="v">:8088/web/designerlaunch</span></div>
+    <div><span class="k">Persp:</span> <span class="v">:8088/data/perspective/client/PROJECT</span></div>
+  </div>
+  <div class="ph">🏗️ ARCHITECTURE</div>
+  <div class="pb" id="arch" style="font-size:6px;line-height:1.5">
+    <div>Gateway (server)</div>
+    <div>&nbsp;├ Web Interface (:8088)</div>
+    <div>&nbsp;├ OPC-UA Server (:62541)</div>
+    <div>&nbsp;├ Tag Providers</div>
+    <div>&nbsp;│ ├ default (internal)</div>
+    <div>&nbsp;│ └ OPC connections</div>
+    <div>&nbsp;├ DB Connections</div>
+    <div>&nbsp;├ Alarm Pipelines</div>
+    <div>&nbsp;├ Projects</div>
+    <div>&nbsp;│ ├ Perspective Views</div>
+    <div>&nbsp;│ ├ Vision Windows</div>
+    <div>&nbsp;│ └ Scripts</div>
+    <div>&nbsp;└ Modules</div>
+    <div>Designer (thick client)</div>
+    <div>&nbsp;├ Tag Editor</div>
+    <div>&nbsp;├ View Designer</div>
+    <div>&nbsp;├ Script Console</div>
+    <div>&nbsp;└ Query Browser</div>
+  </div>
+</div>
+
+<audio id="audio" preload="auto"></audio>
+<input type="file" id="fileIn" accept="audio/*" style="display:none">
+
+<div class="B">
+  <button class="bt" id="prevBt">◀</button>
+  <button class="bt" id="nextBt">▶</button>
+  <button class="bt go" id="autoBt">▶ AUTO</button>
+  <button class="bt" id="rB">● REC</button>
+  <div id="prog"><div id="progF"></div></div>
+  <div id="tmr">0/24</div>
+</div>
+
+<script type="module" src="../src/tutorial/index.mjs"></script>
+</body>
+</html>

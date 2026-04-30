@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.13.create-folder",
+  "index": 13,
+  "phase": "TAGS",
+  "title": "CREATE FOLDER",
+  "ico": "📁",
+  "h1": "CREATE TAG FOLDERS",
+  "h2": "Organize before you build",
+  "body": "Create a folder structure FIRST. Match your physical hierarchy. Enterprise → Site → Area → Line → Equipment.",
+  "code": "[default]\n  └ Plant\n      ├ Utilities\n      │   ├ Boiler\n      │   └ CoolingTower\n      ├ Production\n      │   ├ Line1\n      │   └ Line2\n      ├ Packaging\n      └ QualityLab\n\nISA-95: Enterprise → Site → Area\n        → WorkCenter → Equipment",
+  "key": [
+    "Folder structure = tag path = OPC ref",
+    "Match the physical plant",
+    "Plan structure BEFORE creating tags",
+    "Good structure = good HMI navigation"
+  ],
+  "mistakes": [
+    "Flat list, no folders (unmanageable at 500+ tags)",
+    "Renaming folders after building views (breaks bindings)",
+    "Not planning for expansion"
+  ],
+  "config": {},
+  "prereqs": ["step.12.tag-provider"]
+}

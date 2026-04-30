@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.12.tag-provider",
+  "index": 12,
+  "phase": "TAGS",
+  "title": "TAG PROVIDER",
+  "ico": "🏷️",
+  "h1": "TAG PROVIDERS",
+  "h2": "Config → Tags → Realtime",
+  "body": "[default] is the main tag DB. Tags live HERE — not in the PLC. They are Ignition-side references / bindings.",
+  "code": "Tag Providers:\n  [default]      ← internal, always exists\n  [System]       ← gateway system tags (read-only)\n  [YourProject]  ← project-scoped (if configured)\n\nTags in [default]:\n  - Memory tags     (internal)\n  - OPC tags        (bound to PLC points)\n  - Expression tags (calculated)\n  - Query tags      (from database)\n  - UDT instances   (templated)",
+  "key": [
+    "[default] = main provider",
+    "[System] = read-only gateway health",
+    "Tags are NOT PLC variables — they are references",
+    "Multiple providers allowed"
+  ],
+  "mistakes": [
+    "Thinking tags ARE PLC variables",
+    "Creating tags in the wrong provider",
+    "Not separating tag scan classes from PLC scan rates"
+  ],
+  "config": { "tag_provider": "[default]" },
+  "prereqs": ["step.06.gateway-home"]
+}

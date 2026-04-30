@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.22.script-console",
+  "index": 22,
+  "phase": "DESIGNER",
+  "title": "SCRIPT CONSOLE",
+  "ico": "🖥️",
+  "h1": "SCRIPT CONSOLE",
+  "h2": "Tools → Script Console",
+  "body": "Sandbox for testing any Ignition scripting function before putting it in production. Type a function and see the result immediately.",
+  "code": "Tools → Script Console\n\n# Read a tag\nprint system.tag.readBlocking(\n  [\"[default]Plant/TK101/Level\"]\n)[0].value\n\n# Write a tag\nsystem.tag.writeBlocking(\n  [\"[default]Plant/TK101/Level\"], [42.5])\n\n# Browse tags\nfor t in system.tag.browse(\"[default]Plant\").getResults():\n  print t[\"fullPath\"]\n\n# Query database\nfor row in system.db.runQuery(\n  \"SELECT * FROM tag_history LIMIT 5\", \"main_db\"):\n  print row",
+  "key": [
+    "Ctrl+Space = autocomplete",
+    "Output appears in the right panel",
+    "Runs in gateway scope (sees everything)",
+    "Test here before event handlers"
+  ],
+  "mistakes": [
+    "Writing scripts in event handlers without testing",
+    "Confusing scope (gateway vs client vs session)",
+    "Forgetting print goes to the output panel"
+  ],
+  "config": {},
+  "prereqs": ["step.18.create-project"]
+}

@@ -7,11 +7,11 @@
   "ico": "🔥",
   "h1": "IGNITION SCADA",
   "h2": "Zero to Gateway in 24 Steps",
-  "body": "This tutorial walks you through installing Ignition, configuring a gateway, connecting to PLCs, building your first project, and reading your first tag. Every step is a UDT instance — self-defining, self-documenting.",
-  "code": "UDT:TutorialStep\n  phase: string\n  title: string\n  prereqs: Step[]\n  config_changes: string[]\n  common_mistakes: string[]\n  verify: string",
+  "body": "Walks you through installing Ignition, configuring a gateway, connecting to PLCs, building your first project, and reading your first tag. Every step is a UDT instance — self-defining, self-documenting.",
+  "code": "UDT:TutorialStep\n  phase: enum\n  title: str\n  prereqs: ref<Step>[]\n  config: kv<str,any>\n  mistakes: str[]\n  verify: code",
   "key": [
-    "Ignition is FREE for 2 hours of trial",
-    "Full license is perpetual (not subscription)",
+    "Free for 2 hours of trial",
+    "Full license is perpetual (one-time)",
     "Maker Edition is free forever for personal use",
     "All modules included in trial"
   ],

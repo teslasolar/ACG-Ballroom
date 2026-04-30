@@ -7,18 +7,18 @@
   "ico": "📥",
   "h1": "DOWNLOAD IGNITION",
   "h2": "inductiveautomation.com/downloads",
-  "body": "Go to inductiveautomation.com/downloads. Select your OS (Windows/Linux/Mac). Download the full installer — not the edge or zip version for your first time.",
-  "code": "Platform:   Windows (.exe) | Linux (.run) | Mac (.dmg)\nSize:       ~1.2 GB\nIncludes:   Java runtime (bundled)\n            Gateway service\n            All modules (trial)",
+  "body": "Pick your OS. Download the FULL installer — not the edge or zip version for your first time.",
+  "code": "Platform: Windows (.exe) | Linux (.run) | Mac (.dmg)\nSize:     ~1.2 GB\nIncludes: Java runtime (bundled)\n          Gateway service\n          All modules (trial)",
   "key": [
     "Pick the FULL installer, not Edge",
-    "Java is bundled — do NOT install Java separately",
-    "All modules included — you choose which to activate",
+    "Java is bundled — do NOT install separately",
+    "All modules included — choose at runtime",
     "~1.2GB download"
   ],
   "mistakes": [
-    "Downloading Edge version (limited, for edge gateways only)",
+    "Downloading Edge (limited, edge gateways only)",
     "Installing Java separately (conflicts with bundled JRE)",
-    "Downloading the zip instead of installer (no service registration)"
+    "Downloading the zip (no service registration)"
   ],
   "config": { "file": "ignition-8.x.x-installer.exe" },
   "prereqs": ["step.00.welcome"]

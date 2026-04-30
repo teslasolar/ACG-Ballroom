@@ -1,0 +1,26 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.10.opc-connection",
+  "index": 10,
+  "phase": "CONFIG",
+  "title": "OPC CONNECTION",
+  "ico": "🔌",
+  "h1": "ADD OPC CONNECTION",
+  "h2": "Config → OPC-UA → Device Connections",
+  "body": "How Ignition talks to PLCs. AB → Logix Driver. Modbus, Siemens, others have their own drivers.",
+  "code": "Allen-Bradley Logix:\n  Name:      PLC1\n  Hostname:  10.16.18.224\n  Port:      44818\n  ConnPath:  1,0   (backplane, slot)\n  Scan:      Default (1000ms)\n\nModbus TCP:\n  Hostname:  192.168.1.100\n  Port:      502\n  Unit ID:   1\n\nSiemens S7: OPC-UA or 3rd-party module",
+  "key": [
+    "Logix Driver = CompactLogix/ControlLogix",
+    "ConnPath = port,slot (RSLinx ref)",
+    "Scan class = poll rate",
+    "Status → OPC Connections"
+  ],
+  "mistakes": [
+    "Wrong connection path (1,0 vs 1,2) — check RSLinx",
+    "Firewall blocking port 44818",
+    "Wrong IP (VPN/NAT issues)",
+    "Not checking device status after creating"
+  ],
+  "config": { "plc_driver": "Logix", "hostname": "10.16.18.224", "conn_path": "1,0" },
+  "prereqs": ["step.07.modules"]
+}

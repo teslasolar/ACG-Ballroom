@@ -1,0 +1,26 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.20.first-view",
+  "index": 20,
+  "phase": "DESIGNER",
+  "title": "FIRST VIEW",
+  "ico": "🖥️",
+  "h1": "BUILD YOUR FIRST VIEW",
+  "h2": "Perspective → Views → New",
+  "body": "Project Browser → right-click Perspective → Views → New View. Drag-and-drop canvas. Add components, bind to tags.",
+  "code": "Simple Overview:\n\n1. Create view: \"TankOverview\"\n2. Add Label\n   Props → text: \"Tank TK-101\"\n3. Add Numeric Display\n   Drag Plant/TK101/Level onto it\n   (auto-creates binding)\n4. Add Linear Scale\n   Bind value → {Plant/TK101/Level}\n5. Add LED Display\n   Bind value → {Plant/TK101/InletValve/Open}\n\nSave → Publish → open in browser",
+  "key": [
+    "Drag tags from Tag Browser → drop on component",
+    "Components: ia.display.* / ia.input.* / ia.chart.*",
+    "Save AND Publish to make changes live",
+    "Preview: :8088/data/perspective/client/MyPlant"
+  ],
+  "mistakes": [
+    "Forgetting to Publish after saving",
+    "Vision components in a Perspective project",
+    "Confusing View vs Page",
+    "Absolute positioning vs Flex containers"
+  ],
+  "config": {},
+  "prereqs": ["step.19.tag-browser"]
+}

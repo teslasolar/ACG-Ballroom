@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.17.install-designer",
+  "index": 17,
+  "phase": "DESIGNER",
+  "title": "INSTALL DESIGNER",
+  "ico": "🎨",
+  "h1": "INSTALL DESIGNER LAUNCHER",
+  "h2": "Gateway → Get Designer",
+  "body": "Designer is a thick client that connects to your gateway for development. Download the launcher from the gateway top-menu.",
+  "code": "Designer Launcher:\n  Download from: http://localhost:8088\n  Top menu → \"Get Designer\"\n  Install the .exe/.dmg/.deb\n\nFirst launch:\n  Add Gateway:\n    URL:  http://localhost:8088\n    User: admin\n    Pass: [admin password]\n\n  Click \"Open Designer\"\n  Select your project (or create new)",
+  "key": [
+    "Designer connects TO the gateway — not standalone",
+    "Use IP for remote gateways",
+    "Launcher manages multiple gateways",
+    "Updates auto when the gateway updates"
+  ],
+  "mistakes": [
+    "Trying to \"install\" projects — they live on the gateway",
+    "Old Designer with new gateway",
+    "Firewall blocking 8088 for remote Designer"
+  ],
+  "config": {},
+  "prereqs": ["step.06.gateway-home"]
+}

@@ -1,0 +1,26 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.08.database",
+  "index": 8,
+  "phase": "CONFIG",
+  "title": "DATABASE",
+  "ico": "🗄️",
+  "h1": "ADD DATABASE CONNECTION",
+  "h2": "Config → Databases → Connections",
+  "body": "Every Ignition system needs at least one database for tag history, alarm journals, audit logs, and named queries.",
+  "code": "Create Connection:\n  Name:   main_db\n  Type:   MySQL | PostgreSQL | MSSQL | MariaDB\n  URL:    jdbc:mysql://localhost:3306/ignition\n  User:   ignition_user\n  Pass:   [password]\n  Extra:  useSSL=false (dev only)\nTest Connection → \"Valid\"\n\nLearning: SQLite works, zero setup.",
+  "key": [
+    "SQLite for learning — zero setup",
+    "MySQL/PostgreSQL for production",
+    "Always click Test Connection",
+    "Connection name is referenced everywhere"
+  ],
+  "mistakes": [
+    "Skipping the database (no historian = no trends)",
+    "Using root DB credentials in Ignition",
+    "Not clicking Test Connection",
+    "Forgetting to create the database first"
+  ],
+  "config": { "db_name": "main_db", "db_type": "MySQL" },
+  "prereqs": ["step.07.modules"]
+}

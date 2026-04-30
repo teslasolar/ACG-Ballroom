@@ -1,0 +1,26 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.21.tag-bindings",
+  "index": 21,
+  "phase": "DESIGNER",
+  "title": "TAG BINDINGS",
+  "ico": "🔗",
+  "h1": "TAG BINDINGS",
+  "h2": "Connect components to live data",
+  "body": "Every component property can be bound to a tag. Click property → Add Binding → Tag → select path. Updates live as the tag value changes.",
+  "code": "Binding types:\n  Tag         → direct tag reference\n  Expression  → calculated from tags\n  Property    → from another component\n  Query       → from a Named Query\n\nTag binding:\n  Property: value\n  Type:     Tag\n  Path:     [default]Plant/TK101/Level\n  → component updates at scan rate\n\nBidirectional:\n  Read-only by default.\n  Input components can write back.",
+  "key": [
+    "Tag binding = most common type",
+    "Bidirectional → user can write to PLC",
+    "Expression binding for inline calc",
+    "All bindings are reactive — no polling"
+  ],
+  "mistakes": [
+    "Wrong binding type (Tag vs Expression vs Property)",
+    "Hardcoded values instead of bindings",
+    "Bidirectional on display-only components",
+    "Not understanding read vs write direction"
+  ],
+  "config": {},
+  "prereqs": ["step.20.first-view"]
+}

@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.03.first-launch",
+  "index": 3,
+  "phase": "INSTALL",
+  "title": "FIRST LAUNCH",
+  "ico": "🚀",
+  "h1": "GATEWAY FIRST LAUNCH",
+  "h2": "localhost:8088",
+  "body": "Open a browser. Go to localhost:8088. The Gateway Setup Wizard appears on first launch — it only shows once.",
+  "code": "Browser → http://localhost:8088\n\n  \"Welcome to Ignition!\"\n  [Create My Gateway →]\n\nThis wizard runs ONCE on first boot.\nAfter setup, this URL becomes the\nGateway web UI.",
+  "key": [
+    "Bookmark localhost:8088 immediately",
+    "Setup wizard only appears on first boot",
+    "If \"Gateway is starting\" — wait 30-60s",
+    "/StatusPing for health"
+  ],
+  "mistakes": [
+    "Using HTTPS on first launch (cert not configured)",
+    "Trying to access remotely before opening firewall",
+    "Closing the wizard mid-flow (gateway half-configured)"
+  ],
+  "config": { "url": "http://localhost:8088" },
+  "prereqs": ["step.02.run-installer"]
+}

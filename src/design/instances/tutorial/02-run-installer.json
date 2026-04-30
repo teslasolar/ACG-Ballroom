@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.02.run-installer",
+  "index": 2,
+  "phase": "INSTALL",
+  "title": "RUN INSTALLER",
+  "ico": "⚙️",
+  "h1": "RUN THE INSTALLER",
+  "h2": "Next → Next → Install",
+  "body": "Accept defaults. The installer creates a Windows service (or systemd unit) that starts the gateway automatically.",
+  "code": "Windows:\n  Run as Administrator\n  Dir:  C:\\Program Files\\Inductive Automation\\Ignition\n  Svc:  Ignition Gateway\n  Ports: 8088 (HTTP), 8043 (HTTPS)\nLinux:\n  chmod +x ignition-xxx.run\n  sudo ./ignition-xxx.run\n  Unit: /etc/systemd/system/ignition.service",
+  "key": [
+    "Default ports: 8088 (HTTP), 8043 (HTTPS)",
+    "Service auto-starts on boot",
+    "Install dir holds /data /lib /logs",
+    "wrapper.log is your first debug friend"
+  ],
+  "mistakes": [
+    "Changing the port and forgetting what you set",
+    "Not running as administrator on Windows",
+    "Installing to a path with spaces on Linux"
+  ],
+  "config": { "port": 8088, "port_ssl": 8043, "service": "Ignition Gateway" },
+  "prereqs": ["step.01.download"]
+}

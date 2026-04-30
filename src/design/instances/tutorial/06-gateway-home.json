@@ -1,0 +1,24 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.06.gateway-home",
+  "index": 6,
+  "phase": "INSTALL",
+  "title": "GATEWAY HOME",
+  "ico": "🏠",
+  "h1": "GATEWAY HOME PAGE",
+  "h2": "Your command center",
+  "body": "Shows system health, active projects, tag counts, connection status, and quick links. Get familiar with the left navigation menu.",
+  "code": "Gateway Web UI Sections:\n  Status     → Overview, Connections, Tags, Alarms\n  Config     → Networking, Projects, OPC, DB, Tags\n  Security   → Users, Roles, Auth Profiles\n  System     → Modules, Backup, Licensing\n\nLeft nav is your map. Learn it.",
+  "key": [
+    "Status page shows real-time health",
+    "Config is where you add connections",
+    "System > Modules shows installed modules",
+    "System > Licensing shows trial timer"
+  ],
+  "mistakes": [
+    "Ignoring the Status page (it tells you when things break)",
+    "Not exploring the navigation before diving in"
+  ],
+  "config": {},
+  "prereqs": ["step.05.create-admin"]
+}
