@@ -15,6 +15,8 @@ import { makeControls } from '../modules/ballroom/controls.mjs';
 import { startLoop } from '../modules/ballroom/loop.mjs';
 import { attachPortalNav } from '../modules/ballroom/portal-nav.mjs';
 import { makeVoxelBuilder } from '../modules/ballroom/voxel-builder.mjs';
+import { makePresence } from '../modules/ballroom/presence.mjs';
+import { buildZooNpcs } from '../modules/ballroom/zoo-npcs.mjs';
 import * as theme from '../modules/theme.mjs';
 
 // Map of ballroom id → JSON path. Add new ballrooms here as they land.
@@ -87,6 +89,22 @@ function buildMinimap(world, roomPosFn) {
       ctx.font = '6px monospace';
       ctx.fillText(wr.name.slice(0, 8), sx + 5, sz + 2);
     }
+    // Zoo NPCs (small green dots)
+    if (extras && extras.zooNpcs) {
+      ctx.fillStyle = '#3fb950';
+      for (const n of extras.zooNpcs) {
+        ctx.fillRect(CX + n.basePos[0] * SCALE - 1, CY + n.basePos[2] * SCALE - 1, 2, 2);
+      }
+    }
+    // Remote players (small magenta dots)
+    if (extras && extras.remotes) {
+      ctx.fillStyle = '#ff79c6';
+      for (const r of extras.remotes.values()) {
+        const rx = CX + r.aura.position.x * SCALE;
+        const rz = CY + r.aura.position.z * SCALE;
+        ctx.beginPath(); ctx.arc(rx, rz, 2, 0, Math.PI * 2); ctx.fill();
+      }
+    }
     // Player dot
     if (cameraPos) {
       const px = CX + cameraPos.x * SCALE;
@@ -98,7 +116,8 @@ function buildMinimap(world, roomPosFn) {
     }
   }
 
-  return { draw };
+  let extras = null;
+  return { draw, setExtras: (e) => { extras = e; } };
 }
 
 async function mainWorld(params) {
@@ -198,6 +217,21 @@ async function mainWorld(params) {
   // Minimap
   const minimap = buildMinimap(world, () => camera.position);
 
+  // ── Zoo NPCs (the 14 Konomi creatures, scattered across rooms) ──────────
+  const zoo = buildZooNpcs({ THREE, scene, world });
+
+  // ── Presence (MQTT-driven multiplayer sprites) ──────────────────────────
+  const playerName = (params.get('name')
+    || localStorage.getItem('acg_player_name')
+    || ('guest-' + Math.random().toString(36).slice(2, 6))).slice(0, 16);
+  try { localStorage.setItem('acg_player_name', playerName); } catch (_) {}
+  const presence = makePresence({
+    THREE, scene, camera, worldId: world.id, playerName,
+  });
+
+  // Feed peers + npcs to the minimap so they show as dots.
+  minimap.setExtras({ remotes: presence.remotes, zooNpcs: zoo.npcs });
+
   const portalNav = attachPortalNav({
     camera,
     portals: worldRenderer.portals,
@@ -218,6 +252,8 @@ async function mainWorld(params) {
     onHud: ({ dt }) => {
       portalNav.update();
       voxelBuilder.update();
+      presence.update(dt);
+      zoo.update(performance.now() / 1000);
       minimap.draw(camera.position);
       const fps = document.getElementById('fps');
       if (fps) fps.textContent = Math.round(1 / dt) + ' fps';
