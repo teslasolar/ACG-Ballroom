@@ -56,40 +56,71 @@ function mount(screen, THREE) {
   const iframe = document.createElement('iframe');
   Object.assign(iframe.style, { flex: '1', width: '100%', border: 'none', background: '#0d1117' });
   iframe.setAttribute('referrerpolicy', 'no-referrer');
-  iframe.setAttribute('loading', 'lazy');
+  iframe.setAttribute('loading', 'eager');
   iframe.setAttribute('allow', 'fullscreen');
   iframe.src = (screen.tabs[0] && screen.tabs[0].url) || 'about:blank';
 
-  const buttons = [];
-  screen.tabs.forEach((tab, i) => {
-    const btn = document.createElement('button');
-    btn.textContent = tab.label;
-    Object.assign(btn.style, {
-      background: i === 0 ? frame : '#1a2030',
-      color: i === 0 ? '#0d1117' : frame,
-      border: `1px solid ${frame}`,
-      padding: '6px 14px',
-      fontSize: '13px',
-      fontWeight: '700',
-      cursor: 'pointer',
-      fontFamily: 'inherit',
-      letterSpacing: '1px',
-      borderRadius: '3px',
-    });
-    btn.onclick = () => {
-      iframe.src = tab.url;
-      for (const b of buttons) {
-        b.style.background = '#1a2030';
-        b.style.color = frame;
-      }
-      btn.style.background = frame;
-      btn.style.color = '#0d1117';
-    };
-    tabBar.appendChild(btn);
-    buttons.push(btn);
+  const status = document.createElement('span');
+  status.textContent = 'loading…';
+  Object.assign(status.style, {
+    marginLeft: 'auto', color: '#8b95ad', fontSize: '11px', fontStyle: 'italic', whiteSpace: 'nowrap',
   });
 
-  wrap.appendChild(tabBar);
+  const popout = document.createElement('button');
+  popout.textContent = '↗';
+  Object.assign(popout.style, {
+    background: '#161b22', color: frame, border: `1px solid ${frame}`, padding: '6px 10px', fontSize: '13px', cursor: 'pointer', borderRadius: '3px',
+  });
+  popout.title = 'Open current screen in a new tab';
+  popout.onclick = () => {
+    window.open(iframe.src, '_blank', 'noopener');
+  };
+
+  const buttons = [];
+  const useTabBar = screen.tabs && screen.tabs.length > 1;
+  if (useTabBar) {
+    screen.tabs.forEach((tab, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = tab.label;
+      Object.assign(btn.style, {
+        background: i === 0 ? frame : '#1a2030',
+        color: i === 0 ? '#0d1117' : frame,
+        border: `1px solid ${frame}`,
+        padding: '6px 14px',
+        fontSize: '13px',
+        fontWeight: '700',
+        cursor: 'pointer',
+        fontFamily: 'inherit',
+        letterSpacing: '1px',
+        borderRadius: '3px',
+      });
+      btn.onclick = () => {
+        iframe.src = tab.url;
+        status.textContent = 'loading…';
+        for (const b of buttons) {
+          b.style.background = '#1a2030';
+          b.style.color = frame;
+        }
+        btn.style.background = frame;
+        btn.style.color = '#0d1117';
+      };
+      tabBar.appendChild(btn);
+      buttons.push(btn);
+    });
+    tabBar.appendChild(status);
+    tabBar.appendChild(popout);
+    wrap.appendChild(tabBar);
+  } else {
+    // Single screen mode: no tabs UI, just open the default URL and allow pop-out
+    tabBar.appendChild(status);
+    tabBar.appendChild(popout);
+    wrap.appendChild(tabBar);
+  }
+
+  iframe.onload = () => {
+    status.textContent = 'ready';
+  };
+
   wrap.appendChild(iframe);
 
   const obj = new THREE.CSS3DObject(wrap);

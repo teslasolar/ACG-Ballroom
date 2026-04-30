@@ -26,7 +26,6 @@
       "frame": "#bc8cff",
       "glow": "#3fb950",
       "tabs": [
-        { "udt": "WallTab", "id": "tab.konomi.home", "label": "konomioke.com",      "url": "https://konomioke.com" },
         { "udt": "WallTab", "id": "tab.konomi.chat", "label": "konomioke.com/chat", "url": "https://konomioke.com/chat" }
       ]
     }
