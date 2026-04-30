@@ -28,9 +28,6 @@ async function main() {
   await theme.loadBundleFromUrl('src/design/instances/themes/light.json');
   theme.restoreOrApply('theme.dark');
 
-  const themeBtn = document.getElementById('themeBt');
-  if (themeBtn) themeBtn.onclick = () => theme.toggle();
-
   const [ballroom, ...equipmentList] = await Promise.all([
     fetchJson(BALLROOM_URL),
     ...EQUIPMENT_URLS.map(fetchJson),
@@ -42,11 +39,26 @@ async function main() {
   const container = document.getElementById('three');
   const { THREE, scene, camera, renderer } = makeScene({
     container,
-    bgHex: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#0d1117',
+    bgHex: theme.tokenValue(theme.activeBundle(), '--bg') || '#0d1117',
   });
   const M = makeMaterials(THREE);
 
   const ballroomRenderer = buildBallroom({ ballroom, equipmentById, THREE, scene, M });
+
+  // Push the active theme into the scene immediately, then re-apply on every
+  // toggle so 'lights on' actually flattens the world (no fog, no shadows,
+  // ambient blasted, materials self-emit).
+  const applyActive = () => ballroomRenderer.applyTheme(theme.activeBundle());
+  applyActive();
+  theme.onChange(applyActive);
+
+  const themeBtn = document.getElementById('themeBt');
+  if (themeBtn) {
+    themeBtn.onclick = () => theme.toggle();
+    const reflect = (b) => { themeBtn.title = b.scheme === 'light' ? 'Lights off' : 'Lights on'; };
+    reflect(theme.activeBundle());
+    theme.onChange(reflect);
+  }
 
   const controls = makeControls({
     THREE, camera,
