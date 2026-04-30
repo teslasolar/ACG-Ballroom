@@ -47,6 +47,7 @@ function mount(screen, THREE) {
     borderBottom: `2px solid ${frame}`,
     minHeight: '46px',
     alignItems: 'center',
+    flex: '0 0 auto',
   });
   const brand = document.createElement('span');
   brand.textContent = '⌬ KONOMI';
@@ -54,7 +55,14 @@ function mount(screen, THREE) {
   tabBar.appendChild(brand);
 
   const iframe = document.createElement('iframe');
-  Object.assign(iframe.style, { flex: '1', width: '100%', border: 'none', background: '#0d1117' });
+  Object.assign(iframe.style, {
+    display: 'block',
+    width: '100%',
+    height: 'calc(100% - 54px)',
+    minHeight: '0',
+    border: 'none',
+    background: '#0d1117',
+  });
   iframe.setAttribute('referrerpolicy', 'no-referrer');
   iframe.setAttribute('loading', 'eager');
   iframe.setAttribute('allow', 'fullscreen');
