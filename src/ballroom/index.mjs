@@ -1,16 +1,23 @@
 // Ballroom bootstrap. Loads:
-//   - the active Ballroom instance JSON
-//   - all Equipment instances referenced by the ballroom (for ref<Equipment>)
+//   - the active Ballroom instance JSON (selected via ?ballroom=<id>)
+//   - all Equipment instances referenced by the ballroom (ref<Equipment>)
 //   - registers theme bundles (lights on/off)
-// Then wires scene + renderer + controls + loop.
+// Then wires scene + renderer + controls + loop + portal navigation.
 
 import { makeScene, makeMaterials } from '../modules/ballroom/scene.mjs';
 import { buildBallroom } from '../modules/ballroom/renderer.mjs';
 import { makeControls } from '../modules/ballroom/controls.mjs';
 import { startLoop } from '../modules/ballroom/loop.mjs';
+import { attachPortalNav } from '../modules/ballroom/portal-nav.mjs';
 import * as theme from '../modules/theme.mjs';
 
-const BALLROOM_URL = 'src/design/instances/ballroom/acg-main.json';
+// Map of ballroom id → JSON path. Add new ballrooms here as they land.
+const BALLROOM_REGISTRY = {
+  'br.acg-main':  'src/design/instances/ballroom/acg-main.json',
+  'br.acg-lobby': 'src/design/instances/ballroom/acg-lobby.json',
+};
+const DEFAULT_BALLROOM = 'br.acg-main';
+
 const EQUIPMENT_URLS = [
   'src/design/instances/equipment/tk101-m1.json',
   'src/design/instances/equipment/p101.json',
@@ -28,11 +35,12 @@ async function main() {
   await theme.loadBundleFromUrl('src/design/instances/themes/light.json');
   theme.restoreOrApply('theme.dark');
 
-  const themeBtn = document.getElementById('themeBt');
-  if (themeBtn) themeBtn.onclick = () => theme.toggle();
+  const params = new URLSearchParams(window.location.search);
+  const wantId = params.get('ballroom') || DEFAULT_BALLROOM;
+  const ballroomUrl = BALLROOM_REGISTRY[wantId] || BALLROOM_REGISTRY[DEFAULT_BALLROOM];
 
   const [ballroom, ...equipmentList] = await Promise.all([
-    fetchJson(BALLROOM_URL),
+    fetchJson(ballroomUrl),
     ...EQUIPMENT_URLS.map(fetchJson),
   ]);
 
@@ -42,11 +50,26 @@ async function main() {
   const container = document.getElementById('three');
   const { THREE, scene, camera, renderer } = makeScene({
     container,
-    bgHex: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#0d1117',
+    bgHex: theme.tokenValue(theme.activeBundle(), '--bg') || '#0d1117',
   });
   const M = makeMaterials(THREE);
 
   const ballroomRenderer = buildBallroom({ ballroom, equipmentById, THREE, scene, M });
+
+  // Push the active theme into the scene immediately, then re-apply on every
+  // toggle so 'lights on' actually flattens the world (no fog, no shadows,
+  // ambient blasted, materials self-emit).
+  const applyActive = () => ballroomRenderer.applyTheme(theme.activeBundle());
+  applyActive();
+  theme.onChange(applyActive);
+
+  const themeBtn = document.getElementById('themeBt');
+  if (themeBtn) {
+    themeBtn.onclick = () => theme.toggle();
+    const reflect = (b) => { themeBtn.title = b.scheme === 'light' ? 'Lights off' : 'Lights on'; };
+    reflect(theme.activeBundle());
+    theme.onChange(reflect);
+  }
 
   const controls = makeControls({
     THREE, camera,
@@ -54,16 +77,31 @@ async function main() {
     bounds: ballroomRenderer.bounds,
   });
 
+  // Spawn the camera where the ballroom asks
+  if (ballroom.spawn) camera.position.set(ballroom.spawn[0], ballroom.spawn[1], ballroom.spawn[2]);
+
+  // Surface the active ballroom name in the HUD
+  const roomEl = document.getElementById('room');
+  if (roomEl) roomEl.textContent = ballroom.name || ballroom.id;
+
   // Hide banner once the user clicks-to-lock
   renderer.domElement.addEventListener('click', () => {
     const b = document.getElementById('banner');
     if (b) b.style.opacity = '0';
   });
 
+  // Portal proximity + navigation
+  const portalNav = attachPortalNav({
+    camera,
+    portals: ballroomRenderer.portals,
+    currentBallroomId: ballroom.id,
+  });
+
   startLoop({
     controls, ballroomRenderer,
     threeRenderer: renderer, scene, camera,
     onHud: ({ dt }) => {
+      portalNav.update();
       const fps = document.getElementById('fps');
       if (fps) fps.textContent = Math.round(1 / dt) + ' fps';
       const pos = document.getElementById('pos');

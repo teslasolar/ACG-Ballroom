@@ -1,0 +1,11 @@
+{
+  "udt": "PortalDestination",
+  "kind": "data",
+  "doc": "where a Portal leads — internal ballroom, external URL, or recursive self",
+  "members": {
+    "kind": "enum:url|ballroom|recursive",
+    "url": "str?",
+    "ballroomId": "str?",
+    "openIn": "enum:self|new|overlay?"
+  }
+}

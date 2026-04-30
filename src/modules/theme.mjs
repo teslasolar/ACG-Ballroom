@@ -3,6 +3,7 @@
 
 const STORAGE_KEY = 'acg.theme';
 const bundles = new Map();
+const subscribers = new Set();
 let active = null;
 
 export function registerBundle(bundle) {
@@ -26,6 +27,9 @@ export function applyBundle(idOrBundle) {
   root.dataset.theme = b.scheme;
   active = b.id;
   try { localStorage.setItem(STORAGE_KEY, b.id); } catch (_) {}
+  for (const fn of subscribers) {
+    try { fn(b); } catch (err) { console.error('theme subscriber threw:', err); }
+  }
   return b;
 }
 
@@ -40,6 +44,17 @@ export function toggle() {
 }
 
 export function activeId() { return active; }
+export function activeBundle() { return active ? bundles.get(active) : null; }
+
+export function onChange(fn) {
+  subscribers.add(fn);
+  return () => subscribers.delete(fn);
+}
+
+export function tokenValue(bundle, varName) {
+  const t = bundle && bundle.tokens && bundle.tokens.find((x) => x.varName === varName);
+  return t ? t.value : null;
+}
 
 export function restoreOrApply(defaultId) {
   let id = null;

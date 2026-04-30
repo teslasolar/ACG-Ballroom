@@ -6,9 +6,11 @@
 //   - equipmentById: Map<string, Equipment instance> for ref<Equipment> lookup
 //   - { THREE, scene, M }: from scene.mjs
 //
-// Returns { animate(t), bounds } so the loop can update animated bits.
+// Returns { animate(t), bounds, applyTheme(bundle) } so the loop and the
+// theme module can update animated bits and accessibility shading.
 
 import { vox, cyl } from './scene.mjs';
+import { buildPortals } from './portals.mjs';
 
 export function buildBallroom({ ballroom, equipmentById, THREE, scene, M }) {
   const animated = [];
@@ -39,17 +41,72 @@ export function buildBallroom({ ballroom, equipmentById, THREE, scene, M }) {
     addRoom(room, { THREE, scene, M, animated, equipmentById });
   }
 
-  // Lighting
-  scene.add(new THREE.AmbientLight(0x161b22, 0.6));
+  // Portals — built last so their PointLights and emissive frames sit on
+  // top of the static room geometry. The set of built portals is exposed
+  // back to the bootstrap so portal-nav can drive proximity prompts.
+  const portalSet = buildPortals({ portals: ballroom.portals || [], THREE, scene });
+  animated.push((t) => portalSet.animate(t));
+
+  // Lighting (handles retained for theme switching)
+  const ambient = new THREE.AmbientLight(0x161b22, 0.6);
+  scene.add(ambient);
   const dl = new THREE.DirectionalLight(0xffeedd, 0.4);
   dl.position.set(5, H - 1, 5);
   dl.castShadow = true;
   dl.shadow.mapSize.width = dl.shadow.mapSize.height = 1024;
   scene.add(dl);
 
+  // Snapshot the dark-mode "natural" emissive of every material so we can
+  // restore it after a lights-on round-trip.
+  for (const m of Object.values(M)) {
+    if (m && m.emissive) m.userData.origEmissive = m.emissive.getHex();
+    if (m && typeof m.emissiveIntensity === 'number') m.userData.origEmissiveIntensity = m.emissiveIntensity;
+  }
+
+  // Track whether shading is currently flat (light mode) so animate() can
+  // skip the trim pulse, which would override our flat emissive.
+  const state = { flat: false };
+
+  function applyTheme(bundle) {
+    if (!bundle) return;
+    const bgHex = (bundle.tokens.find((t) => t.varName === '--bg') || {}).value || '#0d1117';
+    scene.background = new THREE.Color(bgHex);
+    state.flat = bundle.scheme === 'light';
+
+    if (state.flat) {
+      // Lights on: maximum readability — drop fog, blast ambient, kill the
+      // directional + shadows, force every material to self-emit at its own
+      // colour so nothing sits in a dark spot.
+      scene.fog = null;
+      ambient.color.set(0xffffff);
+      ambient.intensity = 4.0;
+      dl.intensity = 0.0;
+      dl.castShadow = false;
+      for (const m of Object.values(M)) {
+        if (!m || !m.emissive) continue;
+        m.emissive.copy(m.color);
+        m.emissiveIntensity = 1.0;
+      }
+    } else {
+      // Lights off: restore the original moody dark scene.
+      scene.fog = new THREE.FogExp2(bgHex, 0.015);
+      ambient.color.set(0x161b22);
+      ambient.intensity = 0.6;
+      dl.intensity = 0.4;
+      dl.castShadow = true;
+      for (const m of Object.values(M)) {
+        if (!m || !m.emissive) continue;
+        if (m.userData.origEmissive !== undefined) m.emissive.setHex(m.userData.origEmissive);
+        if (m.userData.origEmissiveIntensity !== undefined) m.emissiveIntensity = m.userData.origEmissiveIntensity;
+      }
+    }
+  }
+
   return {
-    animate(t) { for (const fn of animated) fn(t); },
+    animate(t) { for (const fn of animated) fn(t, state); },
     bounds,
+    applyTheme,
+    portals: portalSet.instances,
   };
 }
 
@@ -96,9 +153,16 @@ function addRoom(room, ctx) {
         scene.add(e);
         embers.push({ mesh: e, vy: 0.01 + Math.random() * 0.02, base: e.position.clone() });
       }
-      animated.push((t) => {
-        fire.intensity = 1.5 + Math.sin(t * 8) * 0.5 + Math.sin(t * 13) * 0.3;
-        fire.color.setHSL(0.06 + Math.sin(t * 5) * 0.02, 1, 0.5);
+      animated.push((t, state) => {
+        // In light mode the directional light is off and ambient is blasting
+        // white, so the dynamic fire/ember glow is invisible noise — skip it
+        // and freeze the embers in a steady fully-lit pose.
+        if (!state.flat) {
+          fire.intensity = 1.5 + Math.sin(t * 8) * 0.5 + Math.sin(t * 13) * 0.3;
+          fire.color.setHSL(0.06 + Math.sin(t * 5) * 0.02, 1, 0.5);
+        } else {
+          fire.intensity = 0;
+        }
         for (const e of embers) {
           e.mesh.position.y += e.vy;
           e.mesh.position.x += Math.sin(t * 2 + e.base.x * 10) * 0.005;
@@ -107,7 +171,13 @@ function addRoom(room, ctx) {
             e.mesh.position.y = e.base.y;
             e.mesh.position.x = e.base.x + Math.random() - 0.5;
           }
-          e.mesh.material.emissive.setHSL(0.08 + Math.sin(t + e.base.x) * 0.03, 1, 0.2 + Math.sin(t * 3 + e.base.z) * 0.1);
+          if (!state.flat) {
+            e.mesh.material.emissive.setHSL(0.08 + Math.sin(t + e.base.x) * 0.03, 1, 0.2 + Math.sin(t * 3 + e.base.z) * 0.1);
+          } else {
+            // Self-light at the ember's own colour so it reads in flat mode.
+            e.mesh.material.emissive.copy(e.mesh.material.color);
+            e.mesh.material.emissiveIntensity = 1.0;
+          }
         }
       });
       break;

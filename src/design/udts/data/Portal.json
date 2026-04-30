@@ -1,0 +1,18 @@
+{
+  "udt": "Portal",
+  "kind": "data",
+  "doc": "doorway with templated arch + flaming aura that links to another ballroom or url",
+  "members": {
+    "id": "str",
+    "label": "str",
+    "pos": "float[]",
+    "facing": "float?",
+    "arch": "enum:round|gothic|cube|toroidal|trapezoid",
+    "scale": "float?",
+    "color": "color",
+    "secondary": "color?",
+    "flame": "enum:none|low|medium|saiyan|nova",
+    "destination": "udt:PortalDestination"
+  },
+  "uses": ["PortalDestination"]
+}
