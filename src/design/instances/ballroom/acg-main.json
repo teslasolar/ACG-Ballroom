@@ -45,7 +45,7 @@
     {
       "udt": "Portal", "id": "po.main.konomi",
       "label": "Konomi · konomioke.com / chat",
-      "pos": [0, 0, -16.5], "facing": 3.1415927,
+      "pos": [0, 0, -12], "facing": 0,
       "arch": "toroidal", "scale": 1.05,
       "color": "#bc8cff", "secondary": "#3fb950",
       "flame": "nova",

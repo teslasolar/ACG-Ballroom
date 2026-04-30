@@ -48,6 +48,17 @@ async function main() {
   const equipmentById = new Map();
   for (const eq of equipmentList) equipmentById.set(eq.id, eq);
 
+  console.log(`[ballroom] loaded ${ballroom.id} "${ballroom.name}"`);
+  console.log(`  rooms=${(ballroom.rooms || []).length}`,
+              `portals=${(ballroom.portals || []).length}`,
+              `screens=${(ballroom.screens || []).length}`,
+              `css3d=${typeof window.THREE?.CSS3DRenderer === 'function'}`);
+  if (ballroom.portals) {
+    for (const p of ballroom.portals) {
+      console.log(`  · portal ${p.id} @ [${p.pos.join(',')}] → ${p.destination.kind}:${p.destination.url || p.destination.ballroomId || ''}`);
+    }
+  }
+
   const container = document.getElementById('three');
   const { THREE, scene, camera, renderer, cssRenderer, cssScene } = makeScene({
     container,
