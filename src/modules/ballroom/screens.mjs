@@ -121,9 +121,14 @@ function mount(screen, THREE) {
     status.textContent = 'ready';
   };
 
+  iframe.style.minHeight = '0';
   wrap.appendChild(iframe);
 
   const obj = new THREE.CSS3DObject(wrap);
+  // CSS3DRenderer may override the display property, so force flex again
+  wrap.style.display = 'flex';
+  wrap.style.flexDirection = 'column';
+  wrap.style.minHeight = '0';
   obj.position.set(screen.pos[0], screen.pos[1], screen.pos[2]);
   obj.rotation.y = screen.facing || 0;
   const [w, h] = screen.size || [4, 3];
