@@ -170,6 +170,106 @@ function buildPathways(rooms, scene, THREE, M) {
   }
 }
 
+// ─── door arch (decorative frame around an opening) ──────────────────────────
+function buildDoorArch(scene, THREE, M, x, y, z, angle, width, height, mat) {
+  const t = 0.3; // arch thickness
+  const m = M[mat] || M.trim;
+  const group = new THREE.Group();
+  group.position.set(x, y, z);
+  group.rotation.y = angle;
+
+  // Left jamb
+  const left = new THREE.Mesh(new THREE.BoxGeometry(t, height, t), m);
+  left.position.set(-width / 2 - t / 2, height / 2, 0);
+  group.add(left);
+  // Right jamb
+  const right = new THREE.Mesh(new THREE.BoxGeometry(t, height, t), m);
+  right.position.set(width / 2 + t / 2, height / 2, 0);
+  group.add(right);
+  // Lintel
+  const lintel = new THREE.Mesh(new THREE.BoxGeometry(width + t * 2, t, t), m);
+  lintel.position.set(0, height + t / 2, 0);
+  group.add(lintel);
+
+  scene.add(group);
+}
+
+// ─── corridor connecting two rooms ────────────────────────────────────────────
+function buildCorridor(roomA, roomB, conn, scene, THREE, M) {
+  const ax = roomA.worldPos[0], ay = roomA.worldPos[1], az = roomA.worldPos[2];
+  const bx = roomB.worldPos[0], by = roomB.worldPos[1], bz = roomB.worldPos[2];
+
+  const dx = bx - ax, dz = bz - az;
+  const len = Math.sqrt(dx * dx + dz * dz);
+  if (len < 1) return;
+
+  const angle = Math.atan2(dx, dz); // rotation around Y so +Z aligns with line
+
+  const W = conn.width || 4;
+  const H = conn.height || 4;
+  const T = 0.3; // wall thickness
+
+  // Center of corridor (midpoint)
+  const cx = (ax + bx) / 2;
+  const cz = (az + bz) / 2;
+  const cy = (ay + by) / 2;
+
+  const matFloor = M[conn.mat] || M.floor;
+  const matWall = M.wall;
+  const matCeil = M.wall;
+
+  const group = new THREE.Group();
+  group.position.set(cx, cy, cz);
+  group.rotation.y = angle;
+
+  // Floor (length along local Z)
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(W, 0.2, len), matFloor);
+  floor.position.set(0, -0.1, 0);
+  floor.receiveShadow = true;
+  group.add(floor);
+
+  // Ceiling
+  const ceil = new THREE.Mesh(new THREE.BoxGeometry(W, 0.2, len), matCeil);
+  ceil.position.set(0, H + 0.1, 0);
+  group.add(ceil);
+
+  // Left wall
+  const wL = new THREE.Mesh(new THREE.BoxGeometry(T, H, len), matWall);
+  wL.position.set(-W / 2 - T / 2, H / 2, 0);
+  wL.castShadow = true;
+  group.add(wL);
+
+  // Right wall
+  const wR = new THREE.Mesh(new THREE.BoxGeometry(T, H, len), matWall);
+  wR.position.set(W / 2 + T / 2, H / 2, 0);
+  wR.castShadow = true;
+  group.add(wR);
+
+  // Glowing trim strip down the center of the floor (wayfinding)
+  const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.05, len), M.trim);
+  stripe.position.set(0, 0.025, 0);
+  group.add(stripe);
+
+  scene.add(group);
+
+  // Door arches at each end (in world space, not corridor space)
+  buildDoorArch(scene, THREE, M, ax, ay, az, angle, W, H, conn.mat);
+  buildDoorArch(scene, THREE, M, bx, by, bz, angle, W, H, conn.mat);
+}
+
+function buildConnections(world, roomById, scene, THREE, M) {
+  const conns = world.connections || [];
+  for (const c of conns) {
+    const a = roomById.get(c.from);
+    const b = roomById.get(c.to);
+    if (!a || !b) {
+      console.warn(`[world] connection refs unknown room: ${c.from} → ${c.to}`);
+      continue;
+    }
+    buildCorridor(a, b, c, scene, THREE, M);
+  }
+}
+
 // ─── sky dome ─────────────────────────────────────────────────────────────────
 function buildSkyDome(scene, THREE, skyHex) {
   const geo = new THREE.SphereGeometry(490, 16, 8);
@@ -187,6 +287,13 @@ export function buildWorld({ world, templateMap, ballroomMap, THREE, scene, M, c
   buildGroundPlane(scene, THREE, M, world.size);
   buildSkyDome(scene, THREE, world.skyHex);
   buildPathways(world.rooms, scene, THREE, M);
+
+  // Build a lookup so connections can resolve room ids → positions.
+  const roomById = new Map();
+  for (const wr of world.rooms) roomById.set(wr.id, wr);
+
+  // Corridors first so room walls render on top at the seams.
+  buildConnections(world, roomById, scene, THREE, M);
 
   for (const wr of world.rooms) {
     const origin = wr.worldPos;

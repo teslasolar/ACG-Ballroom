@@ -71,5 +71,13 @@
       "tags": ["build", "craft", "blocks"]
     }
   ],
+  "connections": [
+    { "udt": "WorldConnection", "from": "wr.acg-main",  "to": "wr.acg-lobby", "width": 4, "height": 4 },
+    { "udt": "WorldConnection", "from": "wr.acg-main",  "to": "wr.konomi",    "width": 4, "height": 4 },
+    { "udt": "WorldConnection", "from": "wr.acg-main",  "to": "wr.arena",     "width": 5, "height": 5 },
+    { "udt": "WorldConnection", "from": "wr.acg-main",  "to": "wr.theater",   "width": 4, "height": 4 },
+    { "udt": "WorldConnection", "from": "wr.acg-lobby", "to": "wr.forge",     "width": 4, "height": 4 },
+    { "udt": "WorldConnection", "from": "wr.arena",    "to": "wr.skybridge", "width": 3, "height": 4, "ramp": true }
+  ],
   "blocks": []
 }

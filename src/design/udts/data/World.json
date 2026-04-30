@@ -10,7 +10,8 @@
     "skyHex":    "color?",
     "fogDensity": "float?",
     "rooms":     "udt:WorldRoom[]",
-    "blocks":    "udt:VoxelBlock[]?"
+    "blocks":     "udt:VoxelBlock[]?",
+    "connections": "udt:WorldConnection[]?"
   },
-  "uses": ["WorldRoom", "VoxelBlock"]
+  "uses": ["WorldRoom", "VoxelBlock", "WorldConnection"]
 }

@@ -1,0 +1,13 @@
+{
+  "udt": "WorldConnection",
+  "kind": "data",
+  "doc": "A walkable corridor between two WorldRooms. Renders a floor + side walls + ceiling along the line connecting the two rooms' centers, with door arches at each end.",
+  "members": {
+    "from":   "str",
+    "to":     "str",
+    "width":  "float?",
+    "height": "float?",
+    "ramp":   "bool?",
+    "mat":    "enum:floor|wall|trim|pillar|glass|anvil|ember?"
+  }
+}
