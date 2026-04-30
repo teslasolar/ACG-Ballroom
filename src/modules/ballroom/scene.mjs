@@ -19,13 +19,33 @@ export function makeScene({ container, fog = true, bgHex = '#0d1117' }) {
   renderer.shadowMap.type = T.PCFSoftShadowMap;
   container.appendChild(renderer.domElement);
 
+  // Optional CSS3D layer for live HTML iframes mounted on walls. The
+  // CSS3DRenderer ships in three.js examples (loaded from CDN by the shim)
+  // and attaches as window.THREE.CSS3DRenderer. We render its scene on top
+  // of the WebGL canvas so iframes are clickable and visible.
+  let cssRenderer = null, cssScene = null;
+  if (T.CSS3DRenderer && T.CSS3DObject) {
+    cssRenderer = new T.CSS3DRenderer();
+    cssRenderer.setSize(innerWidth, innerHeight);
+    Object.assign(cssRenderer.domElement.style, {
+      position: 'fixed',
+      top: '0', left: '0',
+      width: '100%', height: '100%',
+      pointerEvents: 'none',
+      zIndex: '1',
+    });
+    container.appendChild(cssRenderer.domElement);
+    cssScene = new T.Scene();
+  }
+
   window.addEventListener('resize', () => {
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth, innerHeight);
+    if (cssRenderer) cssRenderer.setSize(innerWidth, innerHeight);
   });
 
-  return { THREE: T, scene, camera, renderer };
+  return { THREE: T, scene, camera, renderer, cssRenderer, cssScene };
 }
 
 export function makeMaterials(THREE) {

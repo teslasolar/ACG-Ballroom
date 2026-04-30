@@ -1,0 +1,40 @@
+{
+  "udt": "Ballroom",
+  "id": "br.konomi",
+  "name": "Konomi Room",
+  "size": [16, 6, 16],
+  "spawn": [0, 2, 6],
+  "ambientHex": "#1a0d22",
+  "portals": [
+    {
+      "udt": "Portal", "id": "po.konomi.back",
+      "label": "Back · ACG Main Ballroom",
+      "pos": [0, 0, 6.5], "facing": 3.1415927,
+      "arch": "round", "scale": 0.9,
+      "color": "#3fb950", "secondary": "#bc8cff",
+      "flame": "medium",
+      "destination": { "udt": "PortalDestination", "kind": "ballroom", "ballroomId": "br.acg-main", "openIn": "self" }
+    }
+  ],
+  "screens": [
+    {
+      "udt": "WallScreen",
+      "id": "scr.konomi.main",
+      "pos": [0, 2.6, -7.85],
+      "facing": 0,
+      "size": [9, 4.6],
+      "frame": "#bc8cff",
+      "glow": "#3fb950",
+      "tabs": [
+        { "udt": "WallTab", "id": "tab.konomi.home", "label": "konomioke.com",      "url": "https://konomioke.com" },
+        { "udt": "WallTab", "id": "tab.konomi.chat", "label": "konomioke.com/chat", "url": "https://konomioke.com/chat" }
+      ]
+    }
+  ],
+  "rooms": [
+    {
+      "udt": "Room", "id": "rm.konomi.floor", "name": "Konomi Floor",
+      "kind": "hall", "bbox": [-8, 0, -8,  8, 6,  8]
+    }
+  ]
+}

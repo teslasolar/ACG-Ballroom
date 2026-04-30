@@ -15,6 +15,7 @@ import * as theme from '../modules/theme.mjs';
 const BALLROOM_REGISTRY = {
   'br.acg-main':  'src/design/instances/ballroom/acg-main.json',
   'br.acg-lobby': 'src/design/instances/ballroom/acg-lobby.json',
+  'br.konomi':    'src/design/instances/ballroom/acg-konomi.json',
 };
 const DEFAULT_BALLROOM = 'br.acg-main';
 
@@ -48,13 +49,13 @@ async function main() {
   for (const eq of equipmentList) equipmentById.set(eq.id, eq);
 
   const container = document.getElementById('three');
-  const { THREE, scene, camera, renderer } = makeScene({
+  const { THREE, scene, camera, renderer, cssRenderer, cssScene } = makeScene({
     container,
     bgHex: theme.tokenValue(theme.activeBundle(), '--bg') || '#0d1117',
   });
   const M = makeMaterials(THREE);
 
-  const ballroomRenderer = buildBallroom({ ballroom, equipmentById, THREE, scene, M });
+  const ballroomRenderer = buildBallroom({ ballroom, equipmentById, THREE, scene, M, cssScene });
 
   // Push the active theme into the scene immediately, then re-apply on every
   // toggle so 'lights on' actually flattens the world (no fog, no shadows,
@@ -100,6 +101,7 @@ async function main() {
   startLoop({
     controls, ballroomRenderer,
     threeRenderer: renderer, scene, camera,
+    cssRenderer, cssScene,
     onHud: ({ dt }) => {
       portalNav.update();
       const fps = document.getElementById('fps');

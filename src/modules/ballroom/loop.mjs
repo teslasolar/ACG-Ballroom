@@ -1,8 +1,13 @@
 // Tiny render loop. Each tick: controls.update(), renderer.animate(t),
-// then renderer.render(scene, camera). onFrame is called every 10 frames
-// for HUD updates so we don't thrash the DOM.
+// then renderer.render(scene, camera). If a CSS3D pass is supplied we
+// render it on top so live iframe walls show through. onHud fires every
+// 10 frames so we don't thrash the DOM.
 
-export function startLoop({ controls, ballroomRenderer, threeRenderer, scene, camera, onHud }) {
+export function startLoop({
+  controls, ballroomRenderer, threeRenderer,
+  scene, camera, onHud,
+  cssRenderer = null, cssScene = null,
+}) {
   let lastT = 0, frame = 0;
   function tick(now) {
     requestAnimationFrame(tick);
@@ -11,6 +16,7 @@ export function startLoop({ controls, ballroomRenderer, threeRenderer, scene, ca
     controls.update();
     ballroomRenderer.animate(t);
     threeRenderer.render(scene, camera);
+    if (cssRenderer && cssScene) cssRenderer.render(cssScene, camera);
     if (onHud && frame % 10 === 0) onHud({ t, dt, frame });
   }
   requestAnimationFrame(tick);
