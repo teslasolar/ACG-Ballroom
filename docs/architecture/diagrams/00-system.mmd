@@ -1,0 +1,38 @@
+---
+title: ACG Ballroom — System Overview (root)
+---
+graph TB
+    subgraph Browser["Browser Client (GitHub Pages)"]
+        HTML[acg_ballroom.html]
+        ENTRY[src/ballroom/index.mjs]
+        WORLD[01 World]
+        PRES[02 Presence]
+        ZOO[03 Zoo NPCs]
+        UDT[04 UDT Schema]
+        MOD[05 Runtime Modules]
+    end
+
+    subgraph Net["External Services"]
+        EMQX[(broker.emqx.io)]
+        HIVE[(broker.hivemq.com)]
+        PAGES[GitHub Pages CDN]
+    end
+
+    HTML --> ENTRY
+    ENTRY --> WORLD
+    ENTRY --> PRES
+    ENTRY --> ZOO
+    ENTRY --> MOD
+    WORLD -.loads.-> UDT
+    PRES <-.MQTT/WSS.-> EMQX
+    PRES -.fallback.-> HIVE
+    PAGES --> HTML
+
+    click WORLD "?diagram=01-world" "Drill into world / rooms / connections"
+    click PRES "?diagram=02-presence" "Drill into MQTT presence"
+    click ZOO "?diagram=03-zoo" "Drill into Konomi zoo roster"
+    click UDT "?diagram=04-udt-data" "Drill into UDT data model"
+    click MOD "?diagram=05-modules" "Drill into module dependency graph"
+
+    classDef drill fill:#1e3a5f,stroke:#58a6ff,color:#c9d1d9,cursor:pointer;
+    class WORLD,PRES,ZOO,UDT,MOD drill;

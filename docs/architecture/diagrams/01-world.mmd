@@ -1,0 +1,57 @@
+---
+title: World — rooms, connections, voxels
+---
+erDiagram
+    World ||--o{ WorldRoom : contains
+    World ||--o{ WorldConnection : contains
+    WorldRoom ||--o| RoomTemplate : "uses"
+    WorldRoom ||--o{ VoxelBlock : "voxels[]"
+    WorldRoom ||--o{ Portal : "portals[]"
+    WorldConnection }o--|| WorldRoom : "from"
+    WorldConnection }o--|| WorldRoom : "to"
+    Portal ||--|| PortalDestination : "dest"
+
+    World {
+        string id PK
+        string name
+        string seed
+        array rooms
+        array connections
+        string defaultRoom
+    }
+    WorldRoom {
+        string id PK
+        string name
+        array worldPos "x y z"
+        string template FK
+        array voxels
+        array portals
+    }
+    RoomTemplate {
+        string id PK
+        string kind "hall|theater|arena|forge|bridge"
+        object size
+        array screens
+    }
+    WorldConnection {
+        string id PK
+        string from FK
+        string to FK
+        string kind "door|corridor"
+        array path
+    }
+    VoxelBlock {
+        array pos "x y z"
+        string blockType
+        int color
+    }
+    Portal {
+        string id PK
+        string label
+        array pos
+        object dest FK
+    }
+    PortalDestination {
+        string roomId
+        array spawn
+    }

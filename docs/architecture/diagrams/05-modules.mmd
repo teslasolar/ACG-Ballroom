@@ -1,0 +1,34 @@
+---
+title: Runtime Modules — load + render dependencies
+---
+graph TD
+    HTML[acg_ballroom.html] --> ENTRY[ballroom/index.mjs]
+
+    ENTRY --> LOADER[udt/loader.mjs]
+    ENTRY --> VALIDATE[udt/validate.mjs]
+    ENTRY --> THEME[modules/theme.mjs]
+    ENTRY --> RENDERER[ballroom/renderer.mjs]
+    ENTRY --> SCENE[ballroom/scene.mjs]
+    ENTRY --> WR[ballroom/world-renderer.mjs]
+    ENTRY --> CTRL[ballroom/controls.mjs]
+    ENTRY --> LOOP[ballroom/loop.mjs]
+    ENTRY --> PORT[ballroom/portals.mjs]
+    ENTRY --> PNAV[ballroom/portal-nav.mjs]
+    ENTRY --> SCR[ballroom/screens.mjs]
+    ENTRY --> VOX[ballroom/voxel-builder.mjs]
+    ENTRY --> PRES[ballroom/presence.mjs]
+    ENTRY --> ZOO[ballroom/zoo-npcs.mjs]
+
+    PRES -.uses.-> MQTT[(window.mqtt CDN)]
+    RENDERER -.uses.-> THREE[(THREE r128 CDN)]
+    SCENE -.uses.-> THREE
+    WR -.uses.-> THREE
+    VOX -.uses.-> THREE
+    PRES -.uses.-> THREE
+    ZOO -.uses.-> THREE
+
+    LOADER --> UDT_JSON[(src/design/udts/*.json)]
+    LOADER --> INST_JSON[(src/design/instances/**/*.json)]
+
+    classDef new fill:#0d3a1d,stroke:#3fb950,color:#dffde0;
+    class PRES,ZOO new;

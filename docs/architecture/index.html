@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>ACG · Architecture Explorer</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0d1117; --panel: #161b22; --border: #30363d;
+      --fg: #c9d1d9; --muted: #8b949e; --accent: #58a6ff; --new: #3fb950;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg);
+      font-family: ui-monospace, Menlo, Consolas, monospace; }
+    header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 10px 18px; background: var(--panel); border-bottom: 1px solid var(--border);
+    }
+    header h1 { margin: 0; font-size: 14px; font-weight: 600; }
+    header h1 a { color: var(--accent); text-decoration: none; }
+    nav { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+    nav a {
+      padding: 4px 10px; font-size: 11px; color: var(--fg);
+      background: var(--bg); border: 1px solid var(--border); border-radius: 4px;
+      text-decoration: none;
+    }
+    nav a.active { border-color: var(--accent); color: var(--accent); }
+    nav a:hover { border-color: var(--accent); }
+    main {
+      display: grid; grid-template-columns: 1fr 360px;
+      height: calc(100vh - 50px);
+    }
+    #stage {
+      overflow: auto; padding: 20px; display: flex; flex-direction: column;
+      gap: 18px; align-items: stretch;
+    }
+    .diagram-card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+      padding: 12px;
+    }
+    .diagram-card h2 {
+      margin: 0 0 10px; font-size: 12px; color: var(--muted); font-weight: 500;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .diagram-card h2 .id { color: var(--accent); }
+    .diagram-card h2 .actions a {
+      font-size: 10px; color: var(--muted); text-decoration: none;
+      margin-left: 10px; padding: 2px 6px; border: 1px solid var(--border); border-radius: 3px;
+    }
+    .diagram-card h2 .actions a:hover { color: var(--accent); border-color: var(--accent); }
+    .svg-host {
+      background: #0a0e13; border-radius: 4px; padding: 14px; overflow: auto;
+      min-height: 120px; position: relative;
+    }
+    .svg-host object, .svg-host svg { max-width: 100%; height: auto; display: block; }
+    .svg-host.nested {
+      border: 1px dashed var(--new); margin-top: 12px; background: #08110a;
+    }
+    .svg-host.nested::before {
+      content: 'nested ↳'; position: absolute; top: 4px; right: 8px;
+      font-size: 9px; color: var(--new);
+    }
+    aside {
+      background: var(--panel); border-left: 1px solid var(--border);
+      padding: 16px; overflow: auto; font-size: 11px; line-height: 1.55;
+    }
+    aside h3 { margin-top: 0; font-size: 12px; color: var(--accent); }
+    aside code, aside kbd {
+      background: var(--bg); padding: 1px 5px; border-radius: 3px; border: 1px solid var(--border);
+    }
+    aside ul { padding-left: 18px; }
+    .query-builder { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+    .query-builder label { font-size: 10px; color: var(--muted); }
+    .query-builder input, .query-builder select {
+      background: var(--bg); color: var(--fg); border: 1px solid var(--border);
+      padding: 4px 6px; border-radius: 3px; font-family: inherit; font-size: 11px;
+    }
+    .query-builder button {
+      background: var(--accent); color: #000; border: none; padding: 6px 10px;
+      border-radius: 3px; font-family: inherit; font-size: 11px; cursor: pointer;
+      margin-top: 4px;
+    }
+    .empty { color: var(--muted); font-style: italic; padding: 40px; text-align: center; }
+    .badge { display: inline-block; padding: 1px 6px; border-radius: 8px;
+      font-size: 9px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="../../">⚒ ACG</a> · Architecture</h1>
+    <nav id="nav"></nav>
+  </header>
+
+  <main>
+    <section id="stage"></section>
+    <aside>
+      <h3>Query</h3>
+      <div class="query-builder">
+        <label>Primary diagram
+          <select id="q-primary"></select>
+        </label>
+        <label>Overlay (nest a second SVG)
+          <select id="q-overlay"><option value="">— none —</option></select>
+        </label>
+        <button id="q-go">Update view</button>
+      </div>
+
+      <h3 style="margin-top: 20px;">URL params</h3>
+      <ul>
+        <li><code>?diagram=</code> id (e.g. <code>02-presence</code>)</li>
+        <li><code>&overlay=</code> id (nests inside)</li>
+        <li><code>&all=1</code> renders every diagram</li>
+      </ul>
+
+      <h3 style="margin-top: 20px;">Drill-down</h3>
+      <p>The system overview <span class="badge">00-system</span> uses mermaid <code>click</code> directives.
+      Clicking a node in the rendered SVG navigates to its sub-diagram via <code>?diagram=</code>.</p>
+
+      <h3 style="margin-top: 20px;">Build</h3>
+      <p>Edit <code>diagrams/*.mmd</code> then run:</p>
+      <pre style="background: var(--bg); padding: 8px; border-radius: 4px; overflow:auto; font-size:10px;">node docs/architecture/build.mjs</pre>
+      <p style="color: var(--muted);">Outputs to <code>svg/&lt;name&gt;.svg</code>; this page loads them via <code>&lt;object&gt;</code> so click handlers in the mermaid SVG keep working.</p>
+
+      <h3 style="margin-top: 20px;">Diagrams</h3>
+      <ul id="diag-list" style="font-size: 10px; color: var(--muted);"></ul>
+    </aside>
+  </main>
+
+  <script>
+    // ── Diagram registry ───────────────────────────────────────────────────
+    // Order = nav order. Title = aside hover text.
+    const DIAGRAMS = [
+      { id: '00-system',    title: 'System overview (entry)' },
+      { id: '01-world',     title: 'World UDT — rooms, connections, voxels' },
+      { id: '02-presence',  title: 'Presence — MQTT multiplayer flow' },
+      { id: '03-zoo',       title: 'Konomi Zoo — 14-creature roster' },
+      { id: '04-udt-data',  title: 'UDT data layer ERD' },
+      { id: '05-modules',   title: 'Runtime module dependency graph' },
+    ];
+
+    const params = new URLSearchParams(location.search);
+    const primary  = params.get('diagram') || '00-system';
+    const overlay  = params.get('overlay') || '';
+    const showAll  = params.get('all') === '1';
+
+    // ── Build top nav ──────────────────────────────────────────────────────
+    const nav = document.getElementById('nav');
+    DIAGRAMS.forEach((d) => {
+      const a = document.createElement('a');
+      a.href = `?diagram=${d.id}`;
+      a.textContent = d.id;
+      a.title = d.title;
+      if (!showAll && d.id === primary) a.classList.add('active');
+      nav.appendChild(a);
+    });
+    const all = document.createElement('a');
+    all.href = '?all=1'; all.textContent = '☷ all';
+    if (showAll) all.classList.add('active');
+    nav.appendChild(all);
+
+    // ── Build right-rail diagram list ─────────────────────────────────────
+    const list = document.getElementById('diag-list');
+    DIAGRAMS.forEach((d) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="?diagram=${d.id}" style="color:var(--accent);text-decoration:none;">${d.id}</a> — ${d.title}`;
+      list.appendChild(li);
+    });
+
+    // ── Query builder selects ─────────────────────────────────────────────
+    const qp = document.getElementById('q-primary');
+    const qo = document.getElementById('q-overlay');
+    DIAGRAMS.forEach((d) => {
+      qp.add(new Option(d.id, d.id, false, d.id === primary));
+      qo.add(new Option(d.id, d.id, false, d.id === overlay));
+    });
+    document.getElementById('q-go').addEventListener('click', () => {
+      const u = new URL(location.href);
+      u.searchParams.set('diagram', qp.value);
+      if (qo.value) u.searchParams.set('overlay', qo.value);
+      else u.searchParams.delete('overlay');
+      u.searchParams.delete('all');
+      location.href = u.toString();
+    });
+
+    // ── Render a single card ──────────────────────────────────────────────
+    function card(id, nested = false) {
+      const meta = DIAGRAMS.find((d) => d.id === id);
+      if (!meta) return null;
+      const el = document.createElement('div');
+      el.className = 'diagram-card';
+      el.innerHTML = `
+        <h2>
+          <span><span class="id">${id}</span> · ${meta.title}</span>
+          <span class="actions">
+            <a href="diagrams/${id}.mmd" target="_blank">.mmd source</a>
+            <a href="svg/${id}.svg" target="_blank">.svg raw</a>
+            ${nested ? '' : `<a href="?diagram=${id}">focus</a>`}
+          </span>
+        </h2>
+        <div class="svg-host${nested ? ' nested' : ''}">
+          <object type="image/svg+xml" data="svg/${id}.svg" aria-label="${meta.title}"></object>
+        </div>
+      `;
+      return el;
+    }
+
+    // ── Mount ─────────────────────────────────────────────────────────────
+    const stage = document.getElementById('stage');
+    if (showAll) {
+      DIAGRAMS.forEach((d) => stage.appendChild(card(d.id)));
+    } else {
+      const main = card(primary);
+      if (main) {
+        stage.appendChild(main);
+        if (overlay && overlay !== primary) {
+          // Nest the overlay SVG INSIDE the same card. True SVG-in-SVG via <object>.
+          const host = main.querySelector('.svg-host');
+          const sub = card(overlay, true);
+          if (sub) host.appendChild(sub);
+        }
+      } else {
+        stage.innerHTML = `<div class="empty">unknown diagram: ${primary}</div>`;
+      }
+    }
+
+    // ── Inject click handlers into loaded SVGs ────────────────────────────
+    // Mermaid emits <a xlink:href="?diagram=…"> for `click` directives but the
+    // <object> sandbox would navigate the embedded document. Intercept and
+    // route via the parent.
+    document.addEventListener('load', (e) => {
+      if (!(e.target instanceof HTMLObjectElement)) return;
+      try {
+        const doc = e.target.contentDocument;
+        if (!doc) return;
+        doc.querySelectorAll('a').forEach((a) => {
+          const href = a.getAttribute('xlink:href') || a.getAttribute('href') || '';
+          if (!href) return;
+          a.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            // Resolve relative to this page, not the SVG.
+            const target = href.startsWith('?')
+              ? new URL(href, location.href).toString()
+              : href;
+            window.parent ? (window.parent.location.href = target) : (location.href = target);
+          });
+          a.style.cursor = 'pointer';
+        });
+      } catch (_) { /* cross-origin, give up */ }
+    }, true);
+  </script>
+</body>
+</html>

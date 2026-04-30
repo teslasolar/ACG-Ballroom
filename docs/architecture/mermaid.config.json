@@ -1,0 +1,15 @@
+{
+  "theme": "dark",
+  "themeVariables": {
+    "fontFamily": "ui-monospace, Menlo, Consolas, monospace",
+    "primaryColor": "#1f2730",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#58a6ff",
+    "lineColor": "#8b949e",
+    "secondaryColor": "#0d1117",
+    "tertiaryColor": "#161b22"
+  },
+  "flowchart": { "curve": "basis", "htmlLabels": true },
+  "er": { "useMaxWidth": false },
+  "sequence": { "useMaxWidth": false }
+}

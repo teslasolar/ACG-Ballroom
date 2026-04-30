@@ -1,0 +1,50 @@
+---
+title: UDT Data Layer — full ERD
+---
+erDiagram
+    World ||--o{ WorldRoom : rooms
+    World ||--o{ WorldConnection : connections
+    WorldRoom ||--o| RoomTemplate : template
+    WorldRoom ||--o{ Portal : portals
+    WorldRoom ||--o{ VoxelBlock : voxels
+    WorldRoom ||--o{ WallScreen : screens
+    Portal ||--|| PortalDestination : dest
+
+    Ballroom ||--o{ Equipment : equipment
+    Equipment ||--o{ Tag : tags
+    Equipment ||--o| Motor : motor
+    Equipment ||--o| Pump : pump
+    Equipment ||--o| Tank : tank
+    Equipment ||--o{ AlarmSet : alarms
+    AlarmSet ||--o{ Alarm : alarms
+
+    WallScreen ||--o{ WallTab : tabs
+
+    ThemeBundle ||--o{ ThemeToken : tokens
+
+    TutorialStep }o--o| TutorialStep : "next"
+
+    World { string id PK }
+    WorldRoom { string id PK }
+    RoomTemplate { string id PK }
+    WorldConnection { string id PK }
+    VoxelBlock { array pos }
+    Portal { string id PK }
+    PortalDestination { string roomId }
+
+    Ballroom { string id PK }
+    Equipment { string id PK }
+    Motor { string id PK }
+    Pump { string id PK }
+    Tank { string id PK }
+    Tag { string id PK }
+    Alarm { string id PK }
+    AlarmSet { string id PK }
+
+    WallScreen { string id PK }
+    WallTab { string id PK }
+
+    ThemeBundle { string id PK }
+    ThemeToken { string id PK }
+
+    TutorialStep { string id PK }
