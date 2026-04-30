@@ -41,6 +41,15 @@
       "color": "#bc8cff", "secondary": "#3fb950",
       "flame": "saiyan",
       "destination": { "udt": "PortalDestination", "kind": "recursive", "openIn": "self" }
+    },
+    {
+      "udt": "Portal", "id": "po.main.konomi",
+      "label": "Konomi · konomioke.com / chat",
+      "pos": [0, 0, -12], "facing": 0,
+      "arch": "toroidal", "scale": 1.05,
+      "color": "#bc8cff", "secondary": "#3fb950",
+      "flame": "nova",
+      "destination": { "udt": "PortalDestination", "kind": "ballroom", "ballroomId": "br.konomi", "openIn": "self" }
     }
   ],
   "rooms": [

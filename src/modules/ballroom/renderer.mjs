@@ -11,8 +11,9 @@
 
 import { vox, cyl } from './scene.mjs';
 import { buildPortals } from './portals.mjs';
+import { buildScreens } from './screens.mjs';
 
-export function buildBallroom({ ballroom, equipmentById, THREE, scene, M }) {
+export function buildBallroom({ ballroom, equipmentById, THREE, scene, M, cssScene = null }) {
   const animated = [];
   const bounds = computeBounds(ballroom);
 
@@ -46,6 +47,9 @@ export function buildBallroom({ ballroom, equipmentById, THREE, scene, M }) {
   // back to the bootstrap so portal-nav can drive proximity prompts.
   const portalSet = buildPortals({ portals: ballroom.portals || [], THREE, scene });
   animated.push((t) => portalSet.animate(t));
+
+  // Live wall screens (CSS3D iframes). No-op when cssScene is null.
+  const screenSet = buildScreens({ screens: ballroom.screens || [], cssScene, THREE });
 
   // Lighting (handles retained for theme switching)
   const ambient = new THREE.AmbientLight(0x161b22, 0.6);
@@ -107,6 +111,7 @@ export function buildBallroom({ ballroom, equipmentById, THREE, scene, M }) {
     bounds,
     applyTheme,
     portals: portalSet.instances,
+    screens: screenSet.instances,
   };
 }
 

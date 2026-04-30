@@ -1,0 +1,15 @@
+{
+  "udt": "WallScreen",
+  "kind": "data",
+  "doc": "live iframe panel mounted on a wall via CSS3DRenderer; tabs swap iframe.src",
+  "members": {
+    "id": "str",
+    "pos": "float[]",
+    "facing": "float?",
+    "size": "float[]",
+    "frame": "color?",
+    "glow": "color?",
+    "tabs": "udt:WallTab[]"
+  },
+  "uses": ["WallTab"]
+}

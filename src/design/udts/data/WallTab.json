@@ -1,0 +1,10 @@
+{
+  "udt": "WallTab",
+  "kind": "data",
+  "doc": "one selectable tab inside a WallScreen — opens a URL in the live iframe",
+  "members": {
+    "id": "str",
+    "label": "str",
+    "url": "str"
+  }
+}
