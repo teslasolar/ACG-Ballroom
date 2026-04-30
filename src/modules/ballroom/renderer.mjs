@@ -10,6 +10,7 @@
 // theme module can update animated bits and accessibility shading.
 
 import { vox, cyl } from './scene.mjs';
+import { buildPortals } from './portals.mjs';
 
 export function buildBallroom({ ballroom, equipmentById, THREE, scene, M }) {
   const animated = [];
@@ -39,6 +40,12 @@ export function buildBallroom({ ballroom, equipmentById, THREE, scene, M }) {
   for (const room of ballroom.rooms || []) {
     addRoom(room, { THREE, scene, M, animated, equipmentById });
   }
+
+  // Portals — built last so their PointLights and emissive frames sit on
+  // top of the static room geometry. The set of built portals is exposed
+  // back to the bootstrap so portal-nav can drive proximity prompts.
+  const portalSet = buildPortals({ portals: ballroom.portals || [], THREE, scene });
+  animated.push((t) => portalSet.animate(t));
 
   // Lighting (handles retained for theme switching)
   const ambient = new THREE.AmbientLight(0x161b22, 0.6);
@@ -99,6 +106,7 @@ export function buildBallroom({ ballroom, equipmentById, THREE, scene, M }) {
     animate(t) { for (const fn of animated) fn(t, state); },
     bounds,
     applyTheme,
+    portals: portalSet.instances,
   };
 }
 

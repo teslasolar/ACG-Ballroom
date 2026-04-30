@@ -1,0 +1,43 @@
+{
+  "udt": "Ballroom",
+  "id": "br.acg-lobby",
+  "name": "ACG Lobby",
+  "size": [20, 6, 24],
+  "spawn": [0, 2, 8],
+  "ambientHex": "#0d1117",
+  "portals": [
+    {
+      "udt": "Portal", "id": "po.lobby.back",
+      "label": "Back · ACG Main Ballroom",
+      "pos": [0, 0, 8], "facing": 3.1415927,
+      "arch": "round", "scale": 1.0,
+      "color": "#42e898", "secondary": "#ffd050",
+      "flame": "medium",
+      "destination": { "udt": "PortalDestination", "kind": "ballroom", "ballroomId": "br.acg-main", "openIn": "self" }
+    },
+    {
+      "udt": "Portal", "id": "po.lobby.anthropic",
+      "label": "Anthropic · claude.ai/code",
+      "pos": [-7, 0, -10], "facing": 0,
+      "arch": "trapezoid", "scale": 0.95,
+      "color": "#bc8cff", "secondary": "#58a6ff",
+      "flame": "nova",
+      "destination": { "udt": "PortalDestination", "kind": "url", "url": "https://claude.ai/code", "openIn": "new" }
+    },
+    {
+      "udt": "Portal", "id": "po.lobby.recursive",
+      "label": "Recurse · stay in the lobby",
+      "pos": [7, 0, -10], "facing": 0,
+      "arch": "cube", "scale": 0.85,
+      "color": "#ffd050", "secondary": "#f85149",
+      "flame": "saiyan",
+      "destination": { "udt": "PortalDestination", "kind": "recursive", "openIn": "self" }
+    }
+  ],
+  "rooms": [
+    {
+      "udt": "Room", "id": "rm.lobby.floor", "name": "Lobby Floor",
+      "kind": "hall", "bbox": [-10, 0, -12,  10, 6,  12]
+    }
+  ]
+}

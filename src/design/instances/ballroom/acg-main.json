@@ -5,6 +5,44 @@
   "size": [30, 8, 40],
   "spawn": [0, 2, 15],
   "ambientHex": "#0d1117",
+  "portals": [
+    {
+      "udt": "Portal", "id": "po.main.github",
+      "label": "GitHub · teslasolar/ACG-Ballroom",
+      "pos": [-9, 0, 12], "facing": 0,
+      "arch": "gothic", "scale": 1.0,
+      "color": "#ffd050", "secondary": "#ffffff",
+      "flame": "saiyan",
+      "destination": { "udt": "PortalDestination", "kind": "url", "url": "https://github.com/teslasolar/ACG-Ballroom", "openIn": "new" }
+    },
+    {
+      "udt": "Portal", "id": "po.main.lobby",
+      "label": "Lobby · sibling ballroom",
+      "pos": [9, 0, 12], "facing": 0,
+      "arch": "toroidal", "scale": 1.0,
+      "color": "#58a6ff", "secondary": "#bc8cff",
+      "flame": "nova",
+      "destination": { "udt": "PortalDestination", "kind": "ballroom", "ballroomId": "br.acg-lobby", "openIn": "self" }
+    },
+    {
+      "udt": "Portal", "id": "po.main.tutorial",
+      "label": "Ignition Tutorial",
+      "pos": [-12, 0, -6], "facing": 1.5707963,
+      "arch": "round", "scale": 0.9,
+      "color": "#f57c20", "secondary": "#ffd050",
+      "flame": "medium",
+      "destination": { "udt": "PortalDestination", "kind": "url", "url": "tutorial/", "openIn": "self" }
+    },
+    {
+      "udt": "Portal", "id": "po.main.recursive",
+      "label": "Recurse · enter the ballroom again",
+      "pos": [12, 0, -6], "facing": -1.5707963,
+      "arch": "cube", "scale": 0.9,
+      "color": "#bc8cff", "secondary": "#3fb950",
+      "flame": "saiyan",
+      "destination": { "udt": "PortalDestination", "kind": "recursive", "openIn": "self" }
+    }
+  ],
   "rooms": [
     {
       "udt": "Room", "id": "rm.acg.main-hall", "name": "Main Hall",
