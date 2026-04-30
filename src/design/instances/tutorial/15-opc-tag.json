@@ -1,0 +1,26 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.15.opc-tag",
+  "index": 15,
+  "phase": "TAGS",
+  "title": "OPC TAG",
+  "ico": "📡",
+  "h1": "CREATE OPC-BOUND TAGS",
+  "h2": "Connect tags to PLC points",
+  "body": "Set the OPC Item Path to point at the PLC variable. The tag becomes a live reference, refreshed at the scan class rate.",
+  "code": "New Tag:\n  Name:      TK101_Level\n  Tag Type:  OPC\n  DataType:  Float8\n  OPC Server: Ignition OPC-UA Server\n  Item Path: ns=1;s=[PLC1]Program:MainProgram.TK101_Level\n\nVia UDT param:\n  tagPath = \"[PLC1]Program:MainProgram.TK101\"\n  Member Amps → {tagPath}_Amps\n\nQuality 192 = GOOD, 0 = BAD.",
+  "key": [
+    "OPC Item Path = PLC variable path",
+    "ns=1;s= is OPC-UA notation",
+    "Use Quick Client to copy paths",
+    "Quality: 192 GOOD, 0 BAD"
+  ],
+  "mistakes": [
+    "Typo in OPC Item Path (case sensitive!)",
+    "Wrong namespace (ns=1 vs ns=2)",
+    "Tag type mismatch with PLC variable",
+    "Not checking quality after creation"
+  ],
+  "config": {},
+  "prereqs": ["step.10.opc-connection", "step.14.create-udt"]
+}

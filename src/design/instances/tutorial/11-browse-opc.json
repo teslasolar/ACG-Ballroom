@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.11.browse-opc",
+  "index": 11,
+  "phase": "CONFIG",
+  "title": "BROWSE OPC",
+  "ico": "🔍",
+  "h1": "BROWSE OPC TAGS",
+  "h2": "Config → OPC-UA → Quick Client",
+  "body": "Live OPC browser — see tag values from your PLC. If you see tags here, the PLC connection is working.",
+  "code": "OPC Quick Client:\n  Server: Ignition OPC-UA Server\n  Browse: expand the tree\n\n  [Ignition OPC-UA Server]\n    └ Devices\n        └ PLC1\n            └ Program:MainProgram\n                └ your_tag = 42.5\n\nEmpty → check device status\nRed X → check network/IP/path",
+  "key": [
+    "Quick Client = live OPC browser",
+    "Tags here = PLC connection works",
+    "Tag paths match what tag config uses",
+    "Right-click → Subscribe to watch values"
+  ],
+  "mistakes": [
+    "Confusing Quick Client with the Tag Browser",
+    "Not checking device status first",
+    "Browsing before the device finishes connecting"
+  ],
+  "config": {},
+  "prereqs": ["step.10.opc-connection"]
+}

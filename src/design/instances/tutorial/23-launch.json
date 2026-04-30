@@ -7,19 +7,20 @@
   "ico": "✅",
   "h1": "LAUNCH IN BROWSER",
   "h2": "Your first Ignition application",
-  "body": "Open your browser. Navigate to your Perspective URL. Log in. You should see your view with live data from your PLC. Congratulations — you have a working Ignition SCADA system.",
-  "code": "Browser URL:\n  http://localhost:8088/data/perspective/client/MyPlant\n\nYou should see:\n  ✓ Your view rendering\n  ✓ Live tag values updating\n  ✓ Components bound to PLC data",
+  "body": "Open your browser. Navigate to your Perspective URL. Log in. You should see your view rendering with live data from your PLC. You have a working SCADA system.",
+  "code": "Browser URL:\n  http://localhost:8088/data/perspective/client/MyPlant\n\nYou should see:\n  ✓ Your view rendering\n  ✓ Live tag values updating\n  ✓ Components bound to PLC data\n  ✓ Gateway: running\n  ✓ Device:  connected\n  ✓ Quality: GOOD\n\nNext:\n  → More views\n  → Alarm pipelines\n  → Tag history trends\n  → Navigation\n  → Authentication\n  → Production deploy",
   "key": [
-    "URL pattern: :8088/data/perspective/client/[PROJECT]",
+    ":8088/data/perspective/client/[PROJECT]",
     "Works on any device with a browser",
-    "Mobile responsive if you use Flex containers",
-    "Can serve multiple concurrent users"
+    "Mobile responsive with Flex containers",
+    "Multiple concurrent users"
   ],
   "mistakes": [
-    "Accessing via HTTP when HTTPS is required by auth config",
-    "Not testing on mobile/tablet viewport sizes",
-    "Forgetting to set up authentication before going to production"
+    "HTTP when HTTPS is required by auth",
+    "Not testing on mobile/tablet sizes",
+    "Skipping auth before going to production",
+    "Not backing up the gateway"
   ],
   "config": { "url": "http://localhost:8088/data/perspective/client/MyPlant" },
-  "prereqs": ["step.01.download"]
+  "prereqs": ["step.20.first-view", "step.21.tag-bindings", "step.22.script-console"]
 }

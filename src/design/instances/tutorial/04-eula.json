@@ -1,0 +1,24 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.04.eula",
+  "index": 4,
+  "phase": "INSTALL",
+  "title": "EULA",
+  "ico": "📜",
+  "h1": "ACCEPT THE EULA",
+  "h2": "End User License Agreement",
+  "body": "Standard. Trial = full features for 2 hours, resettable with a gateway restart. Maker Edition is free forever for non-commercial use.",
+  "code": "License options:\n  Trial:    Full features, 2hr reset timer\n  Standard: Perpetual license, purchased\n  Maker:    Free, non-commercial, limited\n  Edge:     Lightweight, limited tags\n\nTrial resets every gateway restart.\nNo credit card needed for trial.",
+  "key": [
+    "Trial = full features, 2hr timer, restart to reset",
+    "You do NOT need a license to learn",
+    "Maker Edition is free forever",
+    "Standard license is perpetual (one-time)"
+  ],
+  "mistakes": [
+    "Thinking you need to buy a license to learn",
+    "Not understanding the 2-hour trial reset"
+  ],
+  "config": { "license": "trial" },
+  "prereqs": ["step.03.first-launch"]
+}

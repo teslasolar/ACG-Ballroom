@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.09.tag-historian",
+  "index": 9,
+  "phase": "CONFIG",
+  "title": "TAG HISTORIAN",
+  "ico": "📈",
+  "h1": "CONFIGURE TAG HISTORIAN",
+  "h2": "Config → Tags → History",
+  "body": "Create a History Provider pointing to your database. This is where tag history gets stored — the backbone of trend charts.",
+  "code": "Create History Provider:\n  Name:         default_history\n  Database:     main_db (from step 8)\n  Partitioning: 1 Month\n  Pruning:      None (keep all data)\n\nTags with historyEnabled=true log here.\n\nStorage modes:\n  min/max/avg per scan class sample rate\n  or raw values at scan rate",
+  "key": [
+    "Must point to a database connection",
+    "Partitioning = monthly tables (easy maintenance)",
+    "Tags need historyEnabled=true individually",
+    "Scan class rate = storage resolution"
+  ],
+  "mistakes": [
+    "Forgetting to create a provider before enabling history",
+    "Too-fast scan rates (fills DB)",
+    "No partitioning (one huge table)"
+  ],
+  "config": { "history_provider": "default_history" },
+  "prereqs": ["step.08.database"]
+}

@@ -1,0 +1,26 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.14.create-udt",
+  "index": 14,
+  "phase": "TAGS",
+  "title": "CREATE UDT",
+  "ico": "📐",
+  "h1": "CREATE UDT DEFINITIONS",
+  "h2": "Templates for reusable tag structures",
+  "body": "UDTs are tag templates. Define once, instantiate many. A Motor UDT with Amps/Speed/Running/Fault creates identical structures for every motor.",
+  "code": "UDT: Motor\n  Parameters:\n    tagPath: \"\" (OPC base path)\n  Members:\n    Amps      Float8   → {tagPath}/Amps\n    Speed     Float8   → {tagPath}/Speed\n    Running   Boolean  → {tagPath}/Running\n    Fault     Boolean  → {tagPath}/Fault\n    RunHours  Float8   → {tagPath}/RunHours\n    HOA       Int4     → {tagPath}/HOA\n    Alarms/   (nested AlarmSet UDT)\n\nNested:\n  Pump  extends Motor + Flow, Pressure\n  Tank  contains Valve, Motor, PID, AlarmSet",
+  "key": [
+    "UDTs = DRY for tags",
+    "Inheritance: Pump extends Motor",
+    "Parameters ({tagPath}) make UDTs reusable",
+    "Edit the def → all instances update"
+  ],
+  "mistakes": [
+    "Individual tags instead of UDTs (manual labor)",
+    "No parameters (hardcoded OPC paths)",
+    "Forgetting UDT inheritance",
+    "Flat tags instead of nested UDTs"
+  ],
+  "config": {},
+  "prereqs": ["step.13.create-folder"]
+}

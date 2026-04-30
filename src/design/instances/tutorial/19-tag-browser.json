@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.19.tag-browser",
+  "index": 19,
+  "phase": "DESIGNER",
+  "title": "TAG BROWSER",
+  "ico": "🏷️",
+  "h1": "DESIGNER TAG BROWSER",
+  "h2": "Your tag command center",
+  "body": "Left-side panel showing all providers, folders, tags, and UDT instances. Create, edit, drag tags onto views, manage structure.",
+  "code": "Tag Browser:\n  [default]\n    └ Plant\n        └ TK101\n            ├ Level     42.5  (GOOD)\n            ├ Temp      65.2  (GOOD)\n            ├ Pressure  1.2   (GOOD)\n            └ InletValve\n                ├ Open    true\n                └ Closed  false\n\nRight-click → New Tag\nRight-click → New UDT Instance\nDrag tag → drop on component = binding",
+  "key": [
+    "Drag tags onto components (auto-bind)",
+    "Right-click for tag creation",
+    "Green dot = good, red = bad quality",
+    "Double-click for full editor"
+  ],
+  "mistakes": [
+    "Designer vs gateway tag creation (both work)",
+    "Not organizing folders first",
+    "Dragging the wrong path onto a component"
+  ],
+  "config": {},
+  "prereqs": ["step.18.create-project"]
+}

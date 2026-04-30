@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.07.modules",
+  "index": 7,
+  "phase": "CONFIG",
+  "title": "MODULES",
+  "ico": "🧩",
+  "h1": "CHECK MODULES",
+  "h2": "Config → System → Modules",
+  "body": "Verify the modules you need are installed and running: Platform, OPC-UA, Tag Historian, Perspective (or Vision), and a database driver.",
+  "code": "Essential:\n  ✓ Platform        (always present)\n  ✓ OPC-UA          (PLC comms)\n  ✓ Tag Historian   (data logging)\n  ✓ Perspective     (modern web UI)\n  ✓ AB / Modbus     (PLC driver)\n  ✓ SQL Bridge      (DB transactions)\nOptional:\n  - Vision  (legacy thick client)\n  - Reporting / Web Developer / SFC",
+  "key": [
+    "All modules included in trial",
+    "OPC-UA is required for PLC comms",
+    "You need at least ONE PLC driver module",
+    "Perspective = modern web · Vision = legacy"
+  ],
+  "mistakes": [
+    "Wrong PLC driver module installed",
+    "Confusing Perspective with Vision",
+    "Uninstalling modules you might need later"
+  ],
+  "config": { "modules": ["Platform", "OPC-UA", "Perspective", "Tag Historian"] },
+  "prereqs": ["step.06.gateway-home"]
+}

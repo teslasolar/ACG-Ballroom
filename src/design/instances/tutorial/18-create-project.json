@@ -1,0 +1,26 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.18.create-project",
+  "index": 18,
+  "phase": "DESIGNER",
+  "title": "CREATE PROJECT",
+  "ico": "📦",
+  "h1": "CREATE A PROJECT",
+  "h2": "Designer → File → New Project",
+  "body": "A project holds Perspective views, Vision windows, scripts, named queries, and alarm pipelines.",
+  "code": "New Project:\n  Name:        MyPlant\n  Title:       My Plant SCADA\n  Enabled:     true\n  Inheritable: false (unless multi-project)\n\nProject contains:\n  ├ Perspective\n  │   ├ Views (drag-and-drop UI)\n  │   ├ Page Config\n  │   └ Session Config\n  ├ Vision (legacy)\n  ├ Scripts (gateway/project/shared)\n  ├ Named Queries\n  ├ Alarm Pipelines\n  └ Transaction Groups",
+  "key": [
+    "One gateway → many projects",
+    "Projects live on the gateway, not locally",
+    "Save and Publish to push changes live",
+    "Use descriptive project names"
+  ],
+  "mistakes": [
+    "Working in the wrong project",
+    "Forgetting to save and publish",
+    "Many projects when one would do",
+    "Skipping project properties (title, auth)"
+  ],
+  "config": { "project": "MyPlant" },
+  "prereqs": ["step.17.install-designer"]
+}

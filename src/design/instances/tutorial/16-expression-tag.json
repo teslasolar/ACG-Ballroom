@@ -1,0 +1,26 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.16.expression-tag",
+  "index": 16,
+  "phase": "TAGS",
+  "title": "EXPRESSION TAG",
+  "ico": "📝",
+  "h1": "EXPRESSION TAGS",
+  "h2": "Calculated values from other tags",
+  "body": "Compute values from other tags + math + logic. Unit conversion, totals, alarm conditions, runtime accumulators.",
+  "code": "// F to C\n({[default]Plant/TK101/Temp} - 32) * 5.0/9.0\n\n// Differential pressure\n{[default]Plant/P101/DischPress}\n  - {[default]Plant/P101/SuctPress}\n\n// Run-hour accumulator\nif({[default]Plant/M101/Running},\n  {[default]Plant/M101/RunHours} + (1.0/3600.0),\n  {[default]Plant/M101/RunHours})\n\n// Alarm condition\n{[default]Plant/TK101/Level} > 90.0",
+  "key": [
+    "Use {} for tag references",
+    "Full path inside braces",
+    "Standard math + - * /",
+    "if(cond, true, false)"
+  ],
+  "mistakes": [
+    "Missing curly braces around tag paths",
+    "Wrong tag path (drag from Tag Browser)",
+    "Division by zero unhandled",
+    "Circular references (self-ref)"
+  ],
+  "config": {},
+  "prereqs": ["step.15.opc-tag"]
+}

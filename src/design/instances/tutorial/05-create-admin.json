@@ -1,0 +1,25 @@
+{
+  "udt": "TutorialStep",
+  "id": "step.05.create-admin",
+  "index": 5,
+  "phase": "INSTALL",
+  "title": "CREATE ADMIN",
+  "ico": "🔑",
+  "h1": "CREATE ADMIN USER",
+  "h2": "Username + Password",
+  "body": "Set the gateway admin. Superuser for both the web UI and Designer. There is no \"forgot password\" without editing config files.",
+  "code": "Username: admin (or your choice)\nPassword: [strong password]\n\nThis account can:\n  - Access the gateway web UI\n  - Open Designer\n  - Configure everything\n  - Run gateway scripts\n\nStore this credential securely.\nNo password reset without file editing.",
+  "key": [
+    "This is the ONLY admin account initially",
+    "No password reset UI — you edit gateway.xml",
+    "Use a password manager",
+    "This user has full gateway access"
+  ],
+  "mistakes": [
+    "Using admin/password (gets hacked in production)",
+    "Forgetting the password with no recovery plan",
+    "Not creating a separate operator account later"
+  ],
+  "config": { "user": "admin" },
+  "prereqs": ["step.04.eula"]
+}
