@@ -51,17 +51,20 @@ export function makePresence({ THREE, scene, camera, worldId, playerName }) {
   let client = null;
   let connected = false;
   let publishAccum = 0;
+  let state = 'connecting…';
 
   // ── connect (try brokers in sequence) ───────────────────────────────────
   function tryBroker(idx) {
     if (idx >= BROKERS.length) {
       console.warn('[presence] no MQTT broker reachable; offline mode');
-      setStatus('offline');
+      state = 'offline';
+      setStatus(state);
       return;
     }
     if (typeof window.mqtt === 'undefined') {
       console.warn('[presence] window.mqtt missing; offline mode');
-      setStatus('offline');
+      state = 'offline';
+      setStatus(state);
       return;
     }
     const cid = `acg_${playerName}_${Math.random().toString(36).slice(2, 8)}`;
@@ -72,7 +75,8 @@ export function makePresence({ THREE, scene, camera, worldId, playerName }) {
       });
       client.on('connect', () => {
         connected = true;
-        setStatus(`online · ${BROKERS[idx].split('//')[1].split(':')[0]}`);
+        state = `online · ${BROKERS[idx].split('//')[1].split(':')[0]}`;
+        setStatus(state);
         client.subscribe(topicBase + 'players/+');
       });
       client.on('message', (topic, payload) => {
@@ -83,7 +87,7 @@ export function makePresence({ THREE, scene, camera, worldId, playerName }) {
         } catch (_) { /* malformed packet */ }
       });
       client.on('error', () => { try { client.end(true); } catch (_) {} ; tryBroker(idx + 1); });
-      client.on('offline', () => setStatus('reconnecting…'));
+      client.on('offline', () => { state = 'reconnecting…'; setStatus(state); });
     } catch (_) { tryBroker(idx + 1); }
   }
   tryBroker(0);
@@ -125,7 +129,7 @@ export function makePresence({ THREE, scene, camera, worldId, playerName }) {
         lastSeen: Date.now(),
       };
       remotes.set(data.name, r);
-      setStatus(`online · ${remotes.size} peer${remotes.size === 1 ? '' : 's'}`);
+      setStatus(state);
     }
     r.target.set(data.x || 0, data.y || 0, data.z || 0);
     r.lastSeen = Date.now();
@@ -157,7 +161,7 @@ export function makePresence({ THREE, scene, camera, worldId, playerName }) {
         r.aura.material.dispose(); r.aura.geometry.dispose();
         r.label.material.map.dispose(); r.label.material.dispose();
         remotes.delete(name);
-        setStatus(`online · ${remotes.size} peer${remotes.size === 1 ? '' : 's'}`);
+        setStatus(state);
         continue;
       }
       // smooth lerp toward last reported position
