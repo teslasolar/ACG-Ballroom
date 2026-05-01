@@ -1,0 +1,80 @@
+---
+title: BloomSCADA — master / device / operator topology
+---
+graph TD
+    subgraph Field["Field Layer"]
+        D1[FieldDevice<br/>Sensor ring]
+        D2[FieldDevice<br/>Actuator]
+        D3[FieldDevice<br/>Watch / T-Wrecks]
+    end
+
+    subgraph Master["SCADA Master · ISA-112"]
+        ING[Telemetry Ingress<br/>tag_fold + value_fold]
+        DISP[Command Dispatch<br/>capability check]
+        ALM[Alarm Engine<br/>BLM-18 Mersenne shields]
+        SKPI[15 SKPI Metrics]
+    end
+
+    subgraph Ops["Operator Plane"]
+        OP1[Operator A<br/>kappa 0.92]
+        OP2[Operator B<br/>kappa 0.61]
+        ROLE[Capability roles]
+    end
+
+    subgraph RPC["Blossom RPC · port 5550"]
+        M1[bloomscada.master_create]
+        M2[bloomscada.ingest]
+        M3[bloomscada.command]
+        M4[bloomscada.alarms]
+        M5[bloomscada.set_dispatch_mode]
+    end
+
+    subgraph Modes["Dispatch Modes"]
+        N[NORMAL]
+        L[LOAD_PICKUP]
+        S[LOAD_SHED]
+        I[ISLANDING]
+        E[EMERGENCY]
+    end
+
+    subgraph HMI["HMI / Dashboard"]
+        SVG[scada-dashboard.svg]
+        WALL[ACG WallScreen]
+        GH[GITPLC Issues]
+    end
+
+    D1 --> ING
+    D2 --> ING
+    D3 --> ING
+    ING --> ALM
+    ING --> SKPI
+    DISP --> D1
+    DISP --> D2
+
+    OP1 --> ROLE
+    OP2 --> ROLE
+    ROLE -. kappa gate .-> DISP
+
+    M1 --> Master
+    M2 --> ING
+    M3 --> DISP
+    M4 --> ALM
+    M5 --> Modes
+    Modes -. policy .-> DISP
+
+    ALM --> SVG
+    SKPI --> SVG
+    SVG --> WALL
+    ALM --> GH
+
+    click ALM "?diagram=08-fsm" "Alarm + lifecycle FSM"
+    click GH "?diagram=09-gitplc" "GitHub Issues as PLC config"
+    click ING "?diagram=06-tags" "Tag UDT data model"
+    click D1 "?diagram=10-rings" "Ring topology"
+
+    classDef master fill:#1e3a5f,stroke:#58a6ff,color:#c9d1d9;
+    classDef ops fill:#3a1e5f,stroke:#bb86fc,color:#e9d8fd;
+    classDef alarm fill:#5f1e1e,stroke:#ff7b72,color:#ffd1cf;
+    class ING,DISP,SKPI master;
+    class OP1,OP2,ROLE ops;
+    class ALM alarm;

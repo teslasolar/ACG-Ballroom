@@ -1,0 +1,97 @@
+---
+title: Tag DB — UDT types & instance pattern
+---
+erDiagram
+    UDT_TYPE ||--o{ TAG_INSTANCE : "typeId"
+    TAG_INSTANCE ||--o{ ALARM_EVENT : "raises"
+    TAG_INSTANCE }o--|| SCAN_CLASS : "scheduled by"
+    TAG_INSTANCE }o--|| PROVIDER : "value source"
+
+    UDT_TYPE {
+        string  type_id        PK "Sensor Status Command Counter Ring Bus"
+        string  category
+        json    fields         "name + datatype + default"
+        json    parameters     "EngUnit EngLow EngHigh"
+        json    alarms         "HiHi Hi Lo LoLo deadband"
+    }
+
+    TAG_INSTANCE {
+        string  tag_path       PK "gateway/tags/system/ram_usage"
+        string  type_id        FK
+        json    parameters     "instance overrides"
+        json    overrides      "thresholds per instance"
+        string  scan_class     "fast medium slow"
+        string  source         "r1_sensor.read_ram"
+    }
+
+    SENSOR {
+        float   Value
+        int     Quality        "0=BAD 192=GOOD"
+        ts      Timestamp
+        float   HiHi
+        float   Hi
+        float   Lo
+        float   LoLo
+        bool    AlarmActive
+        int     AlarmPriority
+    }
+
+    STATUS {
+        bool    Value
+        int     Quality
+        string  Label
+        bool    AlarmOnFalse
+        string  Severity
+        string  Category
+    }
+
+    COMMAND {
+        string  Value          "isa-opcode"
+        string  LastResult
+        int     RunCount
+        string  URL            "endpoint"
+        string  Desc
+        int     RingId         "0..7"
+    }
+
+    RING_TAG {
+        int     ID             "0..7"
+        string  Name
+        string  Glyph
+        int     Prime          "Frobenius prime"
+        bool    Online
+        string  Module
+    }
+
+    BUS_TAG {
+        string  ID             "A..E"
+        string  Name           "ELEC CHEM PHOT MECH PLAS"
+        json    Feeds
+        float   Throughput
+    }
+
+    ALARM_EVENT {
+        string  alarm_id       PK
+        string  state          "ACTIVE ACKED CLEARED"
+        float   PV
+        float   SP
+        int     priority
+        ts      raised_at
+        string  operator       "kappa weighted"
+    }
+
+    SCAN_CLASS {
+        string  name           PK "fast medium slow"
+        int     period_ms
+    }
+
+    PROVIDER {
+        string  name           PK
+        string  kind           "python http mqtt git"
+    }
+
+    UDT_TYPE ||--o| SENSOR  : "specializes"
+    UDT_TYPE ||--o| STATUS  : "specializes"
+    UDT_TYPE ||--o| COMMAND : "specializes"
+    UDT_TYPE ||--o| RING_TAG : "specializes"
+    UDT_TYPE ||--o| BUS_TAG : "specializes"

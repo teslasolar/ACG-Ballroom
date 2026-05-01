@@ -1,0 +1,44 @@
+---
+title: PackML lifecycle + Alarm sub-state
+---
+stateDiagram-v2
+    [*] --> INIT
+    INIT --> BOOTING: power
+    BOOTING --> STARTING: kernel ready
+    STARTING --> LOADING_TAGS: rings online
+    LOADING_TAGS --> IDLE: tags hydrated
+    LOADING_TAGS --> OFFLINE: load fail
+
+    IDLE --> EXECUTE: start cmd
+    EXECUTE --> RUNNING: tick
+    RUNNING --> COMPLETE: done
+    RUNNING --> HOLDING: hold cmd
+    HOLDING --> HELD: settled
+    HELD --> UNHOLDING: resume
+    UNHOLDING --> RUNNING: resumed
+
+    RUNNING --> STOPPING: stop cmd
+    STOPPING --> STOPPED: settled
+    STOPPED --> CLEARING: reset
+    CLEARING --> IDLE: cleaned
+
+    RUNNING --> ABORTING: abort
+    HELD --> ABORTING: abort
+    ABORTING --> ABORTED: settled
+    ABORTED --> CLEARING: reset
+
+    COMPLETE --> BLOOMED: ok
+    BLOOMED --> IDLE: cycle
+
+    state Alarm {
+        [*] --> NONE
+        NONE --> ACTIVE: PV crosses threshold
+        ACTIVE --> ACKED: operator ack
+        ACKED --> CLEARED: PV in band
+        ACTIVE --> CLEARED: self clear
+        CLEARED --> NONE: reset
+    }
+
+    RUNNING --> Alarm: any tag breach
+    HELD --> Alarm: any tag breach
+    Alarm --> RUNNING: cleared

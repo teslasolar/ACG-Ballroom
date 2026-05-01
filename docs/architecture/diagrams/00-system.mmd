@@ -12,10 +12,19 @@ graph TB
         MOD[05 Runtime Modules]
     end
 
+    subgraph Backend["ASS-OS Backend · SCADA spine"]
+        TAGS[06 Tag DB · UDTs]
+        SCADA[07 BloomSCADA Master]
+        FSM[08 PackML FSM]
+        GITPLC[09 GITPLC · Issues-as-config]
+        RINGS[10 Kernel Rings + Buses]
+    end
+
     subgraph Net["External Services"]
         EMQX[(broker.emqx.io)]
         HIVE[(broker.hivemq.com)]
         PAGES[GitHub Pages CDN]
+        GHAPI[(GitHub REST · GITPLC repo)]
     end
 
     HTML --> ENTRY
@@ -28,11 +37,26 @@ graph TB
     PRES -.fallback.-> HIVE
     PAGES --> HTML
 
-    click WORLD "?diagram=01-world" "Drill into world / rooms / connections"
-    click PRES "?diagram=02-presence" "Drill into MQTT presence"
-    click ZOO "?diagram=03-zoo" "Drill into Konomi zoo roster"
-    click UDT "?diagram=04-udt-data" "Drill into UDT data model"
-    click MOD "?diagram=05-modules" "Drill into module dependency graph"
+    UDT -.mirrors.-> TAGS
+    RINGS --> SCADA
+    TAGS --> SCADA
+    SCADA --> FSM
+    SCADA <-.webhook + REST.-> GHAPI
+    GITPLC --- GHAPI
+    SCADA -. HMI feed .-> WORLD
+
+    click WORLD "?diagram=01-world" "World / rooms / connections"
+    click PRES "?diagram=02-presence" "MQTT presence"
+    click ZOO "?diagram=03-zoo" "Konomi zoo roster"
+    click UDT "?diagram=04-udt-data" "UDT data model"
+    click MOD "?diagram=05-modules" "Module dependency graph"
+    click TAGS "?diagram=06-tags" "Tag UDT types and instances"
+    click SCADA "?diagram=07-scada" "BloomSCADA master / device / operator"
+    click FSM "?diagram=08-fsm" "PackML lifecycle + alarm sub-state"
+    click GITPLC "?diagram=09-gitplc" "GitHub Issues as PLC config and alarm log"
+    click RINGS "?diagram=10-rings" "Kernel ring topology and buses"
 
     classDef drill fill:#1e3a5f,stroke:#58a6ff,color:#c9d1d9,cursor:pointer;
+    classDef back fill:#1e5f3a,stroke:#3fb950,color:#aff5b4,cursor:pointer;
     class WORLD,PRES,ZOO,UDT,MOD drill;
+    class TAGS,SCADA,FSM,GITPLC,RINGS back;

@@ -136,6 +136,11 @@
       { id: '03-zoo',       title: 'Konomi Zoo — 14-creature roster' },
       { id: '04-udt-data',  title: 'UDT data layer ERD' },
       { id: '05-modules',   title: 'Runtime module dependency graph' },
+      { id: '06-tags',      title: 'Tag DB — UDT types & instances' },
+      { id: '07-scada',     title: 'BloomSCADA — master / device / operator' },
+      { id: '08-fsm',       title: 'PackML lifecycle + alarm sub-state' },
+      { id: '09-gitplc',    title: 'GITPLC — GitHub Issues as PLC config' },
+      { id: '10-rings',     title: 'Kernel rings (prime spine) + buses' },
     ];
 
     const params = new URLSearchParams(location.search);
@@ -232,12 +237,24 @@
       try {
         const doc = e.target.contentDocument;
         if (!doc) return;
+        // Auto-size <object> to the SVG's intrinsic height so we don't clip.
+        const root = doc.documentElement;
+        if (root) {
+          const vb = (root.getAttribute('viewBox') || '').split(/\s+/).map(parseFloat);
+          const vbw = vb[2] || 0, vbh = vb[3] || 0;
+          if (vbw && vbh) {
+            const hostW = e.target.parentElement.clientWidth - 4;
+            // Mermaid usually sets width="100%". Render at host width, scale height by aspect.
+            const renderW = Math.min(hostW, vbw * 1.5); // allow some upscaling
+            e.target.style.width  = renderW + 'px';
+            e.target.style.height = (renderW * vbh / vbw + 8) + 'px';
+          }
+        }
         doc.querySelectorAll('a').forEach((a) => {
           const href = a.getAttribute('xlink:href') || a.getAttribute('href') || '';
           if (!href) return;
           a.addEventListener('click', (ev) => {
             ev.preventDefault();
-            // Resolve relative to this page, not the SVG.
             const target = href.startsWith('?')
               ? new URL(href, location.href).toString()
               : href;

@@ -1,0 +1,41 @@
+---
+title: GITPLC — GitHub Issues as PLC config + alarm log
+---
+sequenceDiagram
+    autonumber
+    participant Sen as Sensor / Ring
+    participant Mas as SCADA Master
+    participant Tdb as Tag DB
+    participant Sdb as State DB
+    participant Gh as GitHub repo<br/>teslasolar/GITPLC
+    participant Op as Operator HMI
+
+    Note over Gh: config-as-code via labelled issues<br/>gitplc-config plc-alarm
+
+    Op->>Gh: open issue PLC CONFIG<br/>label gitplc-config
+    Gh-->>Mas: webhook config changed
+    Mas->>Tdb: hydrate UDT thresholds
+
+    Op->>Gh: open issue EQUIPMENT<br/>seed instances
+    Gh-->>Mas: register devices
+    Mas->>Tdb: create instance tags
+
+    loop scan period
+        Sen->>Mas: ingest PV quality ts
+        Mas->>Tdb: write value
+        Mas->>Sdb: maybe transition state
+    end
+
+    Sen->>Mas: PV crosses HiHi
+    Mas->>Sdb: alarm.ACTIVE
+    Mas->>Gh: create issue plc-alarm<br/>title PT-101 HIGH-HIGH
+    Gh-->>Op: notification
+    Op->>Gh: comment ACK PV=97.2
+    Gh-->>Mas: comment webhook
+    Mas->>Sdb: alarm.ACKED
+
+    Sen->>Mas: PV back in band
+    Mas->>Sdb: alarm.CLEARED
+    Mas->>Gh: comment CLEARED close issue
+
+    Note over Mas,Gh: every state edge writes a comment<br/>full audit trail in git history
